@@ -1,0 +1,33 @@
+{
+  "status": "prepared-not-built",
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "source": ".build/ui-next",
+  "patch": "patches/user-paper-next.patch",
+  "patch_sha256": "019443dc128f4ee4204b5dc4fa64e8859f5f09c691becdc1a8870d444c894670",
+  "changed_files": [
+    "codex-rs/tui/src/bottom_pane/chat_composer.rs",
+    "codex-rs/tui/src/bottom_pane/textarea.rs",
+    "codex-rs/tui/src/custom_terminal.rs",
+    "codex-rs/tui/src/custom_terminal/cursor.rs",
+    "codex-rs/tui/src/custom_terminal/tests/cursor_tests.rs",
+    "codex-rs/tui/src/history_cell/messages.rs",
+    "codex-rs/tui/src/style.rs",
+    "codex-rs/tui/src/style/blue_cursor.rs",
+    "codex-rs/tui/src/style/blue_paper.rs",
+    "codex-rs/tui/src/transcript_view/follow_control.rs",
+    "codex-rs/tui/src/transcript_view/follow_control_tests.rs",
+    "codex-rs/tui/src/tui.rs",
+    "codex-rs/tui/src/tui/job_control.rs"
+  ],
+  "checks": {
+    "profile_python_tests": "4 passed",
+    "rustfmt_parse_and_format": "pass",
+    "strict_apply_against_clean_pinned_upstream": "pass",
+    "accepted_patch_unchanged": "pass",
+    "rust_compile": "not-run: user requested no rebuild yet",
+    "rust_widget_and_cursor_tests": "written, not run",
+    "installation": "not-run: installed package and profile unchanged",
+    "draft_launcher_rejects_current_schema_1_package": "pass",
+    "live_profile_and_installed_release_unchanged": "pass"
+  }
+}

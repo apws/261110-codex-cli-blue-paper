@@ -1,0 +1,93 @@
+= codex-blue next input-palette revision
+:title: {docname}
+:revdate: 2026-11-10
+:toc:
+
+== Status and intent
+
+_Update after implementation: this is the original proposal. The revision was subsequently built, checked and installed at Falken's request. See link:261110-1743-BUILD-custom-input-palette.adoc[the release handover] for current status; the following preparation notes describe the earlier draft stage._
+
+Prepared on Falken's request as a separate, uncompiled draft. Settle the controls and defaults before rebuilding. The accepted program, live JSON, normal Codex installation and original `patches/user-paper.patch` remain unchanged.
+
+The current lighter paper and larger Kitty font are usable. Retain light paper `#D9EBFF`, black ink `#000000` and normal weight as the proposed local defaults. The next revision makes the remaining input styles adjustable and prevents independent bright foregrounds from becoming unreadable on the custom paper. It does not attempt to provide a theme for the entire application.
+
+== Proposed settings
+
+[cols="2,2,4",options="header"]
+|===
+|Setting |Default |Meaning
+
+|`enabled`
+|`true`
+|Enable the opt-in local customization. `false` retains stock rendering and does not apply a custom cursor.
+
+|`paper` (existing)
+|`#D9EBFF`
+|Editable and submitted user-message background; also used by the floating backscroll control.
+
+|`ink` (existing)
+|`#000000`
+|Ordinary user text and placeholder. Contrast correction can adjust an unreadable requested foreground.
+
+|`emphasis_ink` (new)
+|`auto`
+|Text elements, plugin mentions, and default/white bold key labels inside the composer. `auto` follows corrected ordinary ink. A hex color requests a separate emphasis foreground, corrected against actual paper. Bold styling distinguishes elements even when they share the ink color.
+
+|`hint_ink` (new)
+|`auto`
+|Floating Back to bottom / New activity control. `auto` follows ordinary ink; a hex value requests a separate readable hint foreground. Hover reversal and bold remain available. This setting does not recolor status hints outside the blue surface.
+
+|`cursor` (new)
+|`terminal`
+|`terminal` keeps the currently acceptable cursor. `auto` requests a cursor derived from the cell's foreground, including reversed selections. A hex value requests a particular cursor fill, contrast-corrected against the cell background. Overrides apply only over custom blue-paper cells.
+
+|`cursor_text` (new)
+|`auto`
+|Text beneath a block cursor. `auto` derives it from the cell background; hex selects a preferred foreground. Correction uses the resolved cursor fill. Independent cursor-text control is implemented for Kitty; the xterm-compatible fallback only changes cursor fill.
+
+|`user_text_bold` (new)
+|`false`
+|Optional bold weight for ordinary editable and submitted user text, including the placeholder. Font family and size stay terminal-owned. Existing bold-only emphasis becomes less distinctive when this is enabled, so keep normal weight initially.
+|===
+
+All color requests use `#RRGGBB`; the optional foreground fields also accept `auto`. `cursor` additionally accepts `terminal`. The current profile format with only `enabled`, `paper` and `ink` remains valid in the proposed launcher. Missing new fields use the defaults above. The proposed JSON is in link:../drafts/colors-next.example.json[`drafts/colors-next.example.json`]; a dark-paper experiment is supplied separately in link:../drafts/colors-next-dark.example.json[`drafts/colors-next-dark.example.json`]. These examples have not replaced the live settings.
+
+The current installed launcher does not implement these new keys. Color and weight values will still be read at startup, so a frontend restart/resume will be necessary after editing them. After this revision is built, changing these values will not require compilation.
+
+== Drawing policy
+
+Preserve content, wrapping, selection reversal, underline and the surrounding assistant/status areas. Text elements and mentions use the configured emphasis. A final pass over the composer's own paper-colored cells resolves remaining named or RGB foregrounds against that actual paper. Semantic red/cyan/magenta markers retain a related color with readable contrast rather than all being forced to ordinary black. Bold default/white key labels use the emphasis foreground.
+
+Dim intensity is terminal-defined and can defeat an RGB contrast calculation. The draft removes dimming within the custom-paper composer cells, including hidden-row arrows and voice labels. Consequently an interactive footer will no longer dim those blue composer cells; explicit disabled-input text and interaction behavior remain. This is an intentional visual difference to review. Different-background overlays, hidden cells and externally owned graphics cells are excluded.
+
+The normalizer targets the composer. Submitted ordinary text gains the optional weight and custom elements gain emphasis ink; it is not a blanket recoloring of every rich asynchronous-reply or spoken-message presentation. Outside-panel esc/status labels remain in the normal terminal styling. The compaction screenshot's esc label was outside the blue input surface.
+
+No separate placeholder, warning, voice-meter, popup, assistant-response or selection palette is proposed at present. The draft corrects relevant foregrounds painted on blue paper while retaining their meaning; ordinary selection still reverses its contrasting pair.
+
+== Cursor scope and cleanup
+
+The proposed default `terminal` emits no cursor-color override. With `auto` or a requested color, the draft applies cursor colors only while the cursor lies over a custom-paper cell, resets when it leaves that area or becomes hidden, and reapplies on return. Reset hooks also cover normal terminal cleanup, panic cleanup, external-program handoff, terminal destruction and Ctrl+Z suspension. The shell and external editor should receive terminal defaults; global Kitty/Konsole configuration is not edited.
+
+Kitty's documented https://sw.kovidgoyal.net/kitty/color-stack/[OSC 21 color controls] provide separate cursor and cursor-text settings and reset-to-default keys. The fallback uses https://invisible-island.net/xterm/ctlseqs/ctlseqs.html[xterm OSC 12 and OSC 112] for cursor fill and reset. Unknown terminals and detected tmux/screen sessions retain terminal control. No query sequences are added to the input stream.
+
+This is prepared source, not a claim of live-terminal compatibility. The terminal may ignore unsupported controls; minimum Kitty-version behavior has not been probed. Reset means configured terminal defaults, not restoration of arbitrary colors previously set by another application. Forced process termination cannot execute cleanup hooks. The optional override should remain off until actual terminal checks pass.
+
+== Prepared artifacts
+
+* link:../patches/user-paper-next.patch[`patches/user-paper-next.patch`]: complete patch against the same pinned official upstream, including the accepted initial modification. Apply to pristine upstream, not on top of the old patch.
+* `.build/ui-next`: disposable draft source checkout at upstream commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`. The accepted `.build/patched` tree remains unchanged.
+* link:../drafts/launcher-next.py[`drafts/launcher-next.py`]: strict profile validation and environment mapping. It refuses to launch a package without a future `profile_schema: 2` manifest marker, preventing accidental use with the currently installed binary.
+* link:../drafts/check-profile-next.py[`drafts/check-profile-next.py`]: small launcher-contract checks with no Rust compilation, authentication copying or actual program execution.
+* link:../reports/next-palette-draft.json[`reports/next-palette-draft.json`]: checksum, changed-file list and actual check status.
+
+The build helper now clears all `CODEX_BLUE_PAPER*` configuration variables from its build/test subprocess environment, so future added settings cannot leak from the running frontend into stock-rendering tests. The dedicated preview-directory variable has a different prefix and remains supported.
+
+== Checks completed and deferred
+
+Completed without compiling: four Python profile checks passed; Rust files were parsed/formatted by the isolated native rustfmt; the full draft applies strictly with `git apply --check --index --whitespace=error` to clean pinned upstream; patch whitespace checks pass; the accepted patch checksum is unchanged. Rustfmt reports the upstream stable/nightly `imports_granularity` warning, as before. Formatting establishes syntax parsing, not type correctness.
+
+Rust checks are written but have not been compiled or run. They cover light/dark paper, bright key labels, preservation of reversed selection and different-background cells, normal/bold composer and history text, the actual follow-control buffer and hover state, cursor sequence encoding, and cursor lifecycle/reset behavior in an isolated capture backend. A successful build and live terminal checks are still required before calling this revision usable.
+
+When the settings are settled, promote the draft deliberately: preserve the current accepted artifacts, switch the source patch and launcher together, mark the validated package manifest as profile schema 2, and run the incremental CLI build plus the focused `blue_paper` and stock light-composer checks. Export new widget previews separately from initial-release evidence. Review the actual Kitty cursor and normal/bold/light/dark presentations before switching the installed release. Existing release directories provide rollback.
+
+Do not run the build/package pipeline just to inspect this proposal. No Cargo build, Cargo check, Rust test compilation, package installation or live-profile change was performed for this draft.

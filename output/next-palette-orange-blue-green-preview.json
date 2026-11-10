@@ -1,0 +1,18 @@
+{
+  "kind": "design-mock-up-not-native-render",
+  "profile": {
+    "enabled": true,
+    "paper": "#D9EBFF",
+    "ink": "#000000",
+    "emphasis_ink": "#A64200",
+    "hint_ink": "#164E82",
+    "cursor": "terminal",
+    "cursor_text": "auto",
+    "user_text_bold": false
+  },
+  "terminal_cursor": "#008000",
+  "terminal_cursor_text": "#D9EBFF",
+  "font_regular": "NotoSansMono-Regular.ttf",
+  "font_bold": "NotoSansMono-Bold.ttf",
+  "note": "Color/profile example only; this renderer does not run the CLI or change live settings."
+}

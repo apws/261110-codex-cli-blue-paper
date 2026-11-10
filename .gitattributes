@@ -1,0 +1,2 @@
+# Unified diffs contain single-space blank context lines; git apply checks source whitespace.
+*.patch whitespace=-blank-at-eol

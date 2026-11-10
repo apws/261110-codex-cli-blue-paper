@@ -53,13 +53,15 @@ def main():
     if not args.check_only:
         run(['git', 'apply', '--index', '--whitespace=error', str(PATCH)], tree)
         run(['git', 'diff', '--cached', '--check'], tree)
-        for test_filter in [None, 'blue_paper', 'light_terminal_palette_renders_light_composer_snapshot']:
+        for test_filter in [None, 'blue_paper', 'light_terminal_palette_renders_light_composer_snapshot',
+                            'custom_terminal::tests::cursor']:
             command = [ROOT / 'tools/build-codex', 'blue', '--source', tree,
                        '--expected-commit', commit, '--jobs', str(args.jobs)]
             if test_filter:
                 command.extend(['--test-filter', test_filter])
             run(command)
     report = dict(version=args.version, source_commit=commit, source=str(tree),
+                  profile_schema=2,
                   patch_sha256=hashlib.sha256(PATCH.read_bytes()).hexdigest(),
                   patch_applicability='pass', build_and_focused_tests='not-run' if args.check_only else 'pass')
     if not args.check_only:

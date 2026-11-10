@@ -1,0 +1,92 @@
+= codex-blue input-panel color review
+:title: {docname}
+:revdate: 2026-11-10
+:toc:
+
+== Accepted profile and decision
+
+Falken restarted codex-blue and reported that the lighter paper appeared, the backscroll hint was easier to read, and the cursor was acceptable. Retain this working build and profile. No additional Rust patch, cursor override, or rebuild was made during this review.
+
+[source,json]
+----
+{
+  "enabled": true,
+  "paper": "#D9EBFF",
+  "ink": "#000000"
+}
+----
+
+The profile lives at `~/.config/codex-blue/colors.json`. The launcher reads it at startup and passes environment variables to the executable; the Rust color parser caches those values. Restart codex-blue and resume the conversation after editing. JSON color edits require no compilation. Explicit inherited `CODEX_BLUE_PAPER*` environment overrides take precedence over the profile.
+
+Earlier discussion proposed adding cursor, emphasis and hint settings. Those settings have not been implemented. The current accepted configuration contains only `enabled`, `paper` and `ink`.
+
+== Source audit
+
+Reviewed against official Codex CLI `rust-v0.166.0`, commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, with the original accepted local patch `8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275`.
+
+[cols="2,4,3",options="header"]
+|===
+|Area |Current behavior |JSON coverage
+
+|Editable text and placeholder
+|`chat_composer.rs` applies the custom surface to ordinary text and the placeholder. Masked text inherits the painted buffer style.
+|Paper and ordinary ink.
+
+|Submitted user messages
+|`history_cell/messages.rs` uses `history_prompt_style()`. Text elements and image labels can have an accent; the spoken-message marker has separate red styling.
+|Base paper and ink; some accents remain separate.
+
+|Text elements and plugin mentions
+|`textarea.rs` and `chat_composer.rs` resolve their accent against the custom surface background.
+|Contrast adapts to paper; no separate accent setting.
+
+|Search and selection
+|Textarea overlays use reversal, with bold for search matches. Reversing an already contrasting ink/paper pair preserves its contrast.
+|Uses the configured pair indirectly.
+
+|Back to bottom / New activity
+|`transcript_view/follow_control.rs` uses user-message paper but overrides ink with `user_message_accent_color()`, whose calculation uses terminal-derived background information. Hover reverses the result and adds bold.
+|Paper only. Improved visibility after the profile edit does not mean its ink was changed to black.
+
+|Key labels, including esc
+|`key_hint.rs` uses a bold foreground resolved against the terminal background, with `Color::Reset` as a possible preferred value. The compaction screenshot showed a status line outside the blue composer. Similar helpers also appear in other controls, including voice controls.
+|No dedicated setting. Bright text is not necessarily a literal hardcoded white.
+
+|Prompt markers and attachments
+|Shell mode uses light red; effort/reserve indicators have their own colors. Remote-image labels use cyan and reverse when selected. Hidden-row arrows can be dimmed.
+|Independent accents and modifiers can override the base style.
+
+|Voice and decorative effects
+|The voice strip uses red/cyan/magenta markers and dim labels. Sparkle effects draw on eligible blank cells; effort effects also paint their own styles. An interactive footer can dim the composer.
+|Not a complete palette for these optional states.
+
+|Cursor
+|Codex changes cursor shape and visibility through its terminal layer. This local patch adds no cursor-color escape sequence and no cursor setting in JSON.
+|Color remains terminal-controlled; neither Kitty nor Konsole configuration was modified.
+|===
+
+== Contrast and limits
+
+Calculated sRGB relative-luminance contrast for exact RGB pairs:
+
+* Black `#000000` on paper `#D9EBFF`: approximately 17.28:1.
+* White `#FFFFFF` on the same paper: approximately 1.22:1.
+* Upstream blue accent `#63A8F8` on the same paper: approximately 2.04:1, before any runtime contrast correction.
+
+These calculations describe those exact RGB pairs, not every rendered terminal cell. Bold, dimming, ANSI palette choices, hover reversal and terminal cursor settings can change the visual result. The ordinary custom ink has contrast correction, including 256-color palette reduction; that does not guarantee the same correction for every independent widget.
+
+The accepted pair is sufficient for Falken's present typing and history-review use. It is not a universal light/dark UI theme. Dark-blue paper with white ink is possible through the existing JSON, but its independent accents would need visual review too.
+
+== Notes for the next targeted change
+
+Falken also reported that black input text on the pale paper appears visually thin, whereas the former light-on-dark presentation appeared heavier. The current patch sets foreground/background and removes dimming from ordinary text; it does not select a font family or request bold for ordinary user text. The terminal supplies the font and its rendering. Perceived weight can differ with polarity even when the nominal weight is unchanged.
+
+Candidate for a future combined update: an optional `user_text_bold` boolean in the local profile, applying to editable and submitted ordinary user text, with the current normal weight retained as the default. This is a proposed key, not one the current launcher understands. It should affect user-message surfaces without changing assistant responses, surrounding status lines or the terminal's global font settings. Preview normal and bold side by side before choosing the local preference. If all body text becomes bold, existing bold-only emphasis loses its distinction; review colored elements, selected text, placeholder text and key labels together rather than assuming that bold solves every contrast issue.
+
+No new rebuild is requested for this discussion. Collect the desired controls and their intended scope before implementing a combined styling update.
+
+If a specific unreadable state is observed, reproduce that widget first. The smallest next patch would make the follow-control foreground resolve against its actual custom paper. Optional emphasis/hint settings could default to ordinary ink; bold and underline can retain emphasis. Any later cursor override should be scoped to the application, handle dark overlays as well as the blue composer, and restore terminal defaults on exit, suspension and external-editor handoff.
+
+Check actual widget buffers for the affected states, light and dark custom paper, reversed selection, and disabled/stock rendering. Keep cursor tests separate from text contrast checks. Reuse the existing dependency cache and run proportionate rendering checks; a new color profile alone needs neither a rebuild nor a broad test suite.
+
+This review used source inspection, profile verification, exact-pair contrast calculations and Falken's reported terminal check. Optional voice/effect/attachment states were not newly exercised in a live terminal. The previously validated binary remains installed.

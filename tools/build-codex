@@ -39,6 +39,8 @@ def main():
         changed = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD'], cwd=source, text=True).splitlines()
         assert set(changed) <= {'codex-rs/Cargo.lock'}, changed
     lock_adjustment = normalize_lock(source)
+    ui_diff_sha = hashlib.sha256(subprocess.check_output(
+        ['git', 'diff', 'HEAD', '--binary', '--full-index', '--', 'codex-rs/tui/src'], cwd=source)).hexdigest()
     active_path = BUILD / 'target/codex-blue-active-source.json'
     active = dict(source=str(source), variant=args.variant,
                   source_diff_sha256=hashlib.sha256(subprocess.check_output(['git', 'diff', 'HEAD'], cwd=source)).hexdigest())
@@ -67,9 +69,14 @@ def main():
         command = [cargo, 'test', '--locked', '-p', 'codex-tui', '--lib',
                    '--profile', 'dev-small', '--jobs', str(args.jobs), args.test_filter, '--', '--nocapture']
         env['CODEX_BLUE_PREVIEW_DIR'] = str(ROOT / 'output/native-buffers')
+        # Stock terminal-output snapshots require color-enabled capture, independently
+        # of the parent tool runner's NO_COLOR setting. No-color behavior has explicit tests.
+        env.pop('NO_COLOR', None)
+        env['FORCE_COLOR'] = '3'
     # Only our explicit wrapper enables the feature; ordinary builds/tests stay upstream-default.
-    for name in ('CODEX_BLUE_PAPER', 'CODEX_BLUE_PAPER_BG', 'CODEX_BLUE_PAPER_FG'):
-        env.pop(name, None)
+    for name in list(env):
+        if name == 'CODEX_BLUE_PAPER' or name.startswith('CODEX_BLUE_PAPER_'):
+            env.pop(name, None)
     reports = ROOT / 'reports'
     reports.mkdir(exist_ok=True)
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
@@ -80,11 +87,14 @@ def main():
         result = subprocess.run(command, cwd=source / 'codex-rs', env=env,
                                 stdout=log, stderr=subprocess.STDOUT)
     record = dict(source_commit=args.expected_commit, source=str(source), variant=args.variant, command=command,
+                  source_ui_diff_sha256=ui_diff_sha,
                   seconds=round(time.monotonic() - started, 3), exit_code=result.returncode,
                   cargo_lock_sha256=sha(source / 'codex-rs/Cargo.lock'),
                   release_lock_metadata=lock_adjustment,
                   disk_available_before_gib=round(free / 2**30, 2),
                   disk_available_after_gib=round(shutil.disk_usage(BUILD).free / 2**30, 2))
+    if args.test_filter:
+        record['test_color_environment'] = dict(NO_COLOR='unset', FORCE_COLOR='3')
     if args.test_filter and result.returncode == 0:
         counts = re.findall(r'test result: ok\.\s+(\d+) passed;', (reports / f'{name}.log').read_text())
         record['tests_passed'] = sum(map(int, counts))

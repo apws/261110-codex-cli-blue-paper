@@ -1,0 +1,374 @@
+diff --git a/codex-rs/tui/src/bottom_pane/chat_composer.rs b/codex-rs/tui/src/bottom_pane/chat_composer.rs
+index aa50df3dcea93c426add2323870102f9eb249f1d..df98d3e3dd5c74ac2ccf876b0c605264e9499c81 100644
+--- a/codex-rs/tui/src/bottom_pane/chat_composer.rs
++++ b/codex-rs/tui/src/bottom_pane/chat_composer.rs
+@@ -4979,6 +4979,11 @@ impl ChatComposer {
+                     .render_ref_masked(textarea_rect, buf, &mut state, mask_char);
+             } else {
+                 let mut highlights = self.plugin_at_mention_highlights();
++                if let Some(surface) = crate::style::blue_paper_style() {
++                    for (_, highlight) in &mut highlights {
++                        *highlight = highlight.fg(crate::style::accent_color_on(surface.bg));
++                    }
++                }
+                 let search_highlight_style =
+                     Style::default().add_modifier(Modifier::REVERSED | Modifier::BOLD);
+                 highlights.extend(
+@@ -4987,7 +4992,7 @@ impl ChatComposer {
+                         .chain(self.draft.textarea.vim_search_highlights())
+                         .map(|range| (range, search_highlight_style)),
+                 );
+-                if highlights.is_empty() {
++                if highlights.is_empty() && crate::style::blue_paper_style().is_none() {
+                     StatefulWidgetRef::render_ref(
+                         &(&self.draft.textarea),
+                         textarea_rect,
+@@ -4999,7 +5004,7 @@ impl ChatComposer {
+                         textarea_rect,
+                         buf,
+                         &mut state,
+-                        Style::default(),
++                        crate::style::blue_paper_style().unwrap_or_default(),
+                         &highlights,
+                     );
+                 }
+@@ -5016,7 +5021,11 @@ impl ChatComposer {
+                     .to_string()
+             };
+             if !textarea_rect.is_empty() {
+-                let placeholder = Span::from(text).dim();
++                let placeholder = if let Some(surface) = crate::style::blue_paper_style() {
++                    Span::from(text).style(surface)
++                } else {
++                    Span::from(text).dim()
++                };
+                 Line::from(vec![placeholder]).render(textarea_rect.inner(Margin::new(0, 0)), buf);
+             }
+         }
+@@ -5150,6 +5159,81 @@ mod tests {
+         );
+     }
+ 
++    #[test]
++    fn blue_paper_user_surfaces() {
++        use crate::history_cell::HistoryCell as _;
++        const TEST: &str = "bottom_pane::chat_composer::tests::blue_paper_user_surfaces";
++        if std::env::var_os("CODEX_BLUE_PAPER_TEST_CHILD").is_none() {
++            let output = std::process::Command::new(std::env::current_exe().unwrap())
++                .args(["--exact", TEST, "--nocapture"])
++                .env("CODEX_BLUE_PAPER_TEST_CHILD", "1")
++                .env("CODEX_BLUE_PAPER", "1")
++                .env("CODEX_BLUE_PAPER_BG", "#A4CDFB")
++                .env("CODEX_BLUE_PAPER_FG", "#101820")
++                .env("FORCE_COLOR", "3")
++                .env_remove("NO_COLOR")
++                .output()
++                .unwrap();
++            assert!(
++                output.status.success(),
++                "{}\n{}",
++                String::from_utf8_lossy(&output.stdout),
++                String::from_utf8_lossy(&output.stderr)
++            );
++            return;
++        }
++        crate::terminal_palette::with_test_default_colors(
++            crate::terminal_probe::DefaultColors {
++                fg: (224, 224, 224),
++                bg: (18, 18, 18),
++            },
++            || {
++                let text = "Příliš žluťoučký kůň úpěl ďábelské ódy.\nPlease check FirstZ80.";
++                let area = Rect::new(0, 0, 80, 8);
++                let (mut composer, _rx) = new_test_composer();
++                composer.draft.textarea.insert_str(text);
++                let mut composer_buffer = Buffer::empty(area);
++                composer.render(area, &mut composer_buffer);
++                let history = crate::history_cell::new_user_prompt(
++                    text.to_string(),
++                    Vec::new(),
++                    Vec::new(),
++                    Vec::new(),
++                );
++                let mut history_buffer = Buffer::empty(area);
++                Paragraph::new(history.display_lines(area.width)).render(area, &mut history_buffer);
++                for buffer in [&composer_buffer, &history_buffer] {
++                    let cell = buffer
++                        .content
++                        .iter()
++                        .find(|cell| cell.symbol() == "ž")
++                        .unwrap();
++                    assert_eq!(cell.fg, crate::terminal_palette::rgb_color((16, 24, 32)));
++                    assert_eq!(cell.bg, crate::terminal_palette::rgb_color((164, 205, 251)));
++                }
++                assert_eq!(composer.draft.textarea.text(), text);
++                if let Some(directory) = std::env::var_os("CODEX_BLUE_PREVIEW_DIR") {
++                    let directory = std::path::PathBuf::from(directory);
++                    std::fs::create_dir_all(&directory).unwrap();
++                    for (name, buffer) in
++                        [("composer", &composer_buffer), ("history", &history_buffer)]
++                    {
++                        let cells: Vec<_> = buffer.content.iter().map(|cell| serde_json::json!({
++                            "text": cell.symbol(), "fg": format!("{:?}", cell.fg),
++                            "bg": format!("{:?}", cell.bg), "modifiers": format!("{:?}", cell.modifier),
++                        })).collect();
++                        let data = serde_json::json!({"width": area.width, "height": area.height, "cells": cells});
++                        std::fs::write(
++                            directory.join(format!("{name}.json")),
++                            serde_json::to_vec_pretty(&data).unwrap(),
++                        )
++                        .unwrap();
++                    }
++                }
++            },
++        );
++    }
++
+     #[test]
+     fn light_terminal_palette_renders_light_composer_snapshot() {
+         let colors = crate::terminal_probe::DefaultColors {
+diff --git a/codex-rs/tui/src/bottom_pane/textarea.rs b/codex-rs/tui/src/bottom_pane/textarea.rs
+index b2192697c64104a8f34cabe9b084f28a94c7c262..08a6a25e3aa2e4590dcbedb6a8ca5741dcccafb0 100644
+--- a/codex-rs/tui/src/bottom_pane/textarea.rs
++++ b/codex-rs/tui/src/bottom_pane/textarea.rs
+@@ -2292,7 +2292,7 @@ impl TextArea {
+         base_style: Style,
+         highlights: &[(Range<usize>, Style)],
+     ) {
+-        let element_style = base_style.fg(Color::Cyan);
++        let element_style = crate::style::user_surface_element_style(base_style, Color::Cyan);
+         for (row, idx) in range.clone().enumerate() {
+             let r = &lines[idx];
+             let y = area.y + row as u16;
+diff --git a/codex-rs/tui/src/style.rs b/codex-rs/tui/src/style.rs
+index 8008042c1c47e8fc6a86d76b753e9d8d7d281c47..8a6cb3e3355a024547bcc66277915817151a65e8 100644
+--- a/codex-rs/tui/src/style.rs
++++ b/codex-rs/tui/src/style.rs
+@@ -1,6 +1,7 @@
+ //! Shared TUI colors and semantic styles, including the picker and transcript accent.
+ //! Informative accents meet minimum contrast on known backgrounds and supported palettes.
+ 
++mod blue_paper;
+ mod contrast;
+ 
+ use crate::color::blend;
+@@ -58,7 +59,21 @@ fn status_style_for(
+ const TABLE_SEPARATOR_FG_ALPHA: f32 = 0.20;
+ 
+ pub fn user_message_style() -> Style {
+-    user_message_style_for(default_bg())
++    blue_paper_style().unwrap_or_else(|| user_message_style_for(default_bg()))
++}
++
++/// Optional local user-surface colors; the stock style remains available when disabled.
++pub(crate) fn blue_paper_style() -> Option<Style> {
++    blue_paper::style()
++}
++
++/// Keep text-element emphasis readable on the explicitly colored user surface.
++pub(crate) fn user_surface_element_style(base: Style, stock: Color) -> Style {
++    if blue_paper_style().is_some_and(|style| style.bg == base.bg) {
++        base.fg(accent_color_on(base.bg)).not_dim()
++    } else {
++        base.fg(stock)
++    }
+ }
+ 
+ /// Submitted prompts use a lighter fill than the editable composer in either theme.
+@@ -66,6 +81,9 @@ pub fn user_message_style() -> Style {
+ /// Some terminals do not answer the optional default-color probe. Keep submitted prompts shaded
+ /// with an ANSI-safe fallback instead of dropping the surface.
+ pub(crate) fn history_prompt_style() -> Style {
++    if let Some(style) = blue_paper_style() {
++        return style;
++    }
+     let Some(background) = default_bg() else {
+         return Style::default().bg(Color::DarkGray);
+     };
+diff --git a/codex-rs/tui/src/style/blue_paper.rs b/codex-rs/tui/src/style/blue_paper.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..1402b307e629237274cb9d7360b857cb54c90e2e
+--- /dev/null
++++ b/codex-rs/tui/src/style/blue_paper.rs
+@@ -0,0 +1,181 @@
++//! Local, opt-in user-message paper/ink colors. Never affects agent/backend behavior.
++//!
++//! The external codex-blue wrapper sets these variables before process startup.
++//! Invalid colors or disabled/unsupported color output retain upstream rendering.
++
++use crate::terminal_palette::StdoutColorLevel;
++use crate::terminal_palette::XTERM_COLORS;
++use crate::terminal_palette::best_color_for_level;
++use crate::terminal_palette::effective_stdout_color_level;
++use ratatui::style::Color;
++use ratatui::style::Style;
++use std::sync::OnceLock;
++
++type Rgb = (u8, u8, u8);
++const DEFAULT_PAPER: Rgb = (164, 205, 251);
++const DEFAULT_INK: Rgb = (16, 24, 32);
++
++#[derive(Clone, Copy)]
++struct Colors {
++    paper: Rgb,
++    ink: Rgb,
++}
++
++fn parse_hex(value: &str) -> Option<Rgb> {
++    let value = value.trim().strip_prefix('#').unwrap_or(value.trim());
++    if value.len() != 6 || !value.bytes().all(|byte| byte.is_ascii_hexdigit()) {
++        return None;
++    }
++    Some((
++        u8::from_str_radix(&value[0..2], 16).ok()?,
++        u8::from_str_radix(&value[2..4], 16).ok()?,
++        u8::from_str_radix(&value[4..6], 16).ok()?,
++    ))
++}
++
++fn parse_colors(enabled: &str, paper: Option<&str>, ink: Option<&str>) -> Option<Colors> {
++    if !matches!(
++        enabled.trim().to_ascii_lowercase().as_str(),
++        "1" | "true" | "on"
++    ) {
++        return None;
++    }
++    Some(Colors {
++        paper: paper.map_or(Some(DEFAULT_PAPER), parse_hex)?,
++        ink: ink.map_or(Some(DEFAULT_INK), parse_hex)?,
++    })
++}
++
++fn style_for(colors: Option<Colors>, level: StdoutColorLevel, no_color: bool) -> Option<Style> {
++    if no_color
++        || !matches!(
++            level,
++            StdoutColorLevel::TrueColor | StdoutColorLevel::Ansi256
++        )
++    {
++        return None;
++    }
++    let colors = colors?;
++    let paper = best_color_for_level(colors.paper, level);
++    let actual_paper = match paper {
++        Color::Rgb(r, g, b) => (r, g, b),
++        Color::Indexed(index) if index >= 16 => XTERM_COLORS[usize::from(index)],
++        _ => return None,
++    };
++    // Preserve requested ink when readable; otherwise use upstream contrast correction.
++    let ink = super::contrast::foreground(colors.ink, Some(actual_paper), level);
++    Some(Style::default().fg(ink).bg(paper).not_dim())
++}
++
++pub(super) fn style() -> Option<Style> {
++    static COLORS: OnceLock<Option<Colors>> = OnceLock::new();
++    let colors = *COLORS.get_or_init(|| {
++        parse_colors(
++            &std::env::var("CODEX_BLUE_PAPER").unwrap_or_default(),
++            std::env::var("CODEX_BLUE_PAPER_BG").ok().as_deref(),
++            std::env::var("CODEX_BLUE_PAPER_FG").ok().as_deref(),
++        )
++    });
++    let no_color = std::env::var_os("NO_COLOR").is_some_and(|value| !value.is_empty());
++    style_for(colors, effective_stdout_color_level(), no_color)
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use crate::terminal_palette::rgb_color;
++
++    fn contrast_ratio(a: Rgb, b: Rgb) -> f64 {
++        let luminance = |(r, g, b): Rgb| {
++            let linear = |channel: u8| {
++                let value = f64::from(channel) / 255.0;
++                if value <= 0.04045 {
++                    value / 12.92
++                } else {
++                    ((value + 0.055) / 1.055).powf(2.4)
++                }
++            };
++            0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b)
++        };
++        let (a, b) = (luminance(a), luminance(b));
++        (a.max(b) + 0.05) / (a.min(b) + 0.05)
++    }
++
++    #[test]
++    fn colors_accept_hex_and_reject_malformed_or_unicode_values() {
++        assert_eq!(parse_hex(" #a4CdFb "), Some(DEFAULT_PAPER));
++        for value in ["", "#abc", "gggggg", "11223344", "ž1234", "12345\n6"] {
++            assert_eq!(parse_hex(value), None, "{value}");
++        }
++        assert!(parse_colors("on", Some("not-a-color"), None).is_none());
++    }
++
++    #[test]
++    fn truecolor_uses_the_approved_paper_and_ink() {
++        let style = style_for(
++            parse_colors("1", None, None),
++            StdoutColorLevel::TrueColor,
++            false,
++        );
++        assert_eq!(
++            style,
++            Some(
++                Style::default()
++                    .fg(rgb_color(DEFAULT_INK))
++                    .bg(rgb_color(DEFAULT_PAPER))
++                    .not_dim()
++            )
++        );
++    }
++
++    #[test]
++    fn disabled_no_color_and_unsupported_terminals_retain_stock_rendering() {
++        let colors = parse_colors("true", None, None);
++        assert!(
++            style_for(
++                parse_colors("0", None, None),
++                StdoutColorLevel::TrueColor,
++                false
++            )
++            .is_none()
++        );
++        assert!(style_for(colors, StdoutColorLevel::TrueColor, true).is_none());
++        assert!(style_for(colors, StdoutColorLevel::Ansi16, false).is_none());
++        assert!(style_for(colors, StdoutColorLevel::Unknown, false).is_none());
++    }
++
++    #[test]
++    fn palette_reduction_preserves_readable_ink() {
++        let Some(style) = style_for(
++            parse_colors("on", None, None),
++            StdoutColorLevel::Ansi256,
++            false,
++        ) else {
++            panic!("expected a 256-color style");
++        };
++        let (Some(Color::Indexed(paper)), Some(Color::Indexed(ink))) = (style.bg, style.fg) else {
++            panic!("expected indexed colors");
++        };
++        assert!(
++            contrast_ratio(
++                XTERM_COLORS[usize::from(ink)],
++                XTERM_COLORS[usize::from(paper)]
++            ) >= 4.5
++        );
++    }
++
++    #[test]
++    fn unreadable_custom_ink_is_corrected_against_the_actual_fill() {
++        let Some(style) = style_for(
++            parse_colors("1", Some("A4CDFB"), Some("A4CDFB")),
++            StdoutColorLevel::TrueColor,
++            false,
++        ) else {
++            panic!("expected a truecolor style");
++        };
++        let Some(Color::Rgb(r, g, b)) = style.fg else {
++            panic!("expected RGB ink");
++        };
++        assert!(contrast_ratio((r, g, b), DEFAULT_PAPER) >= 4.5);
++    }
++}

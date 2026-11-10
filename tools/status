@@ -25,16 +25,22 @@ def stamp(log):
 
 def show():
     now = datetime.datetime.now(datetime.timezone.utc)
+    start_record = ROOT / 'reports/workflow-start.json'
+    workflow = json.loads(start_record.read_text()) if start_record.exists() else {}
+    started = datetime.datetime.fromisoformat(workflow['started_utc']) if workflow else None
+    def fresh(path):
+        return path.exists() and (started is None or path.stat().st_mtime >= started.timestamp())
     review_path = ROOT / 'reports/terminal-review.json'
-    review = json.loads(review_path.read_text()) if review_path.exists() else None
+    review = json.loads(review_path.read_text()) if fresh(review_path) else None
     complete = review is not None and review.get('status') == 'pass'
     if complete:
         now = datetime.datetime.fromisoformat(review['accepted_utc'])
-    logs = sorted((ROOT / 'reports').glob('20*.log'))
+    logs = sorted(log for log in (ROOT / 'reports').glob('20*.log')
+                  if started is None or stamp(log) >= started.replace(microsecond=0))
     width = max(60, shutil.get_terminal_size((100, 35)).columns)
     def line(value=''):
         print(value if len(value) < width else value[:width - 2] + '…')
-    stage = 1
+    stage = 3 if workflow.get('baseline_reused') else 1
     result = None
     content = []
     if logs:
@@ -46,9 +52,9 @@ def show():
         content = log.read_text(errors='replace').splitlines()
         if result and result['exit_code'] == 0 and stage in (2, 3):
             stage += 1
-        if (ROOT / 'reports/validation.json').exists():
+        if fresh(ROOT / 'reports/validation.json'):
             stage = 5
-        if (ROOT / 'reports/installed.json').exists():
+        if fresh(ROOT / 'reports/installed.json'):
             stage = 6
     failed = result is not None and result['exit_code'] != 0
     line('codex-blue / COMPLETE / 6 of 6 stages' if complete else
@@ -65,15 +71,14 @@ def show():
             label += ' (patch draft ready)'
         line(f'  [{state}] {number}. {label}')
     if logs:
-        start_record = ROOT / 'reports/workflow-start.json'
-        started = datetime.datetime.fromisoformat(json.loads(start_record.read_text())['started_utc']) if start_record.exists() else stamp(logs[0])
+        started = started or stamp(logs[0])
         overall = (now - started).total_seconds()
         elapsed = (now - stamp(log)).total_seconds()
         line()
         line(f'Workflow elapsed: {duration(overall)} | Latest build/check: {duration(elapsed)}')
         if stage < 6 and not failed:
             low, high = max(0, 3600 - overall), max(0, 10800 - overall)
-            stage_allowance = {3: (20, 60), 4: (10, 40), 5: (2, 10)}
+            stage_allowance = {3: (1, 10), 4: (2, 15), 5: (1, 5)} if workflow.get('baseline_reused') else {3: (20, 60), 4: (10, 40), 5: (2, 10)}
             if stage in stage_allowance:
                 low, high = (max(0, minutes * 60 - (elapsed if result is None else 0)) for minutes in stage_allowance[stage])
             if high:

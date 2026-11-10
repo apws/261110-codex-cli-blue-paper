@@ -1,12 +1,13 @@
 {
-  "path": "/home/falken/.local/share/codex-blue/releases/0.166.0-8376a70f3b52",
+  "path": "/home/falken/.local/share/codex-blue/releases/0.166.0-019443dc128f",
   "version": "0.166.0",
   "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
-  "patch_sha256": "8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275",
-  "binary_sha256": "ef3d45905efc70eb5a95c34dbc2a3a7620345ce73afd20a9893a4ea56eba9333",
+  "patch_sha256": "019443dc128f4ee4204b5dc4fa64e8859f5f09c691becdc1a8870d444c894670",
+  "binary_sha256": "cbb8c2983088ce46c26b3fdca081569b9c1855571db5c8293ffe648001bdd6ac",
   "target": "x86_64-unknown-linux-gnu",
   "official_helpers_target": "x86_64-unknown-linux-musl",
-  "validation_sha256": "c07212e7abbe67e07412db07dd271be348d8da7d77fe6f644ee50bd25d059a10",
+  "validation_sha256": "6cefd503755207f6853104b5e0b420ef6f80fc7a563c391947c1dbe348151b16",
   "profile": "dev-small",
+  "profile_schema": 2,
   "note": "Local color-only source patch; bundled helpers/resources from the matching official package."
 }

@@ -1,0 +1,34 @@
+{
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "source": "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/patched",
+  "variant": "blue",
+  "command": [
+    "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/cargo/bin/cargo",
+    "test",
+    "--locked",
+    "-p",
+    "codex-tui",
+    "--lib",
+    "--profile",
+    "dev-small",
+    "--jobs",
+    "2",
+    "blue_paper",
+    "--",
+    "--nocapture"
+  ],
+  "source_ui_diff_sha256": "019443dc128f4ee4204b5dc4fa64e8859f5f09c691becdc1a8870d444c894670",
+  "seconds": 130.619,
+  "exit_code": 0,
+  "cargo_lock_sha256": "360ea1e0ec391255ffc153a73548be524aa5d50c3476f247631cec184c21d4cb",
+  "release_lock_metadata": {
+    "original_sha256": "22bd51f50864ce40f6686f3350c0547fdd50a8213240f54435ed394f68bf08e6",
+    "normalized_sha256": "360ea1e0ec391255ffc153a73548be524aa5d50c3476f247631cec184c21d4cb",
+    "workspace_version": "0.166.0",
+    "local_release_labels_normalized": 170,
+    "external_packages_and_all_dependency_edges_unchanged": true
+  },
+  "disk_available_before_gib": 469.91,
+  "disk_available_after_gib": 469.1,
+  "tests_passed": 12
+}

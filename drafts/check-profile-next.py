@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""Fast checks of the uninstalled launcher/profile contract; no Rust build or real exec."""
+import importlib.util
+import json
+from pathlib import Path
+import unittest
+
+ROOT = Path(__file__).resolve().parent
+spec = importlib.util.spec_from_file_location('launcher_next', ROOT / 'launcher-next.py')
+launcher = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(launcher)
+
+
+class ProfileChecks(unittest.TestCase):
+    def test_old_profile_and_new_examples(self):
+        old = launcher.validate_profile(dict(enabled=True, paper='#D9EBFF', ink='#000000'))
+        self.assertEqual(old, launcher.DEFAULT_PROFILE)
+        for path in ROOT.glob('colors-next*.json'):
+            launcher.validate_profile(json.loads(path.read_text()))
+
+    def test_invalid_settings_are_reported(self):
+        for entry in ({'paper': 'blue'}, {'cursor': '\x1b]12;bad'}, {'user_text_bold': 'false'},
+                      {'hint_ink': 'terminal'}, {'ink': None}, {'enabled': 1}, {'typo': '#000000'}):
+            with self.subTest(entry=entry), self.assertRaises(ValueError):
+                launcher.validate_profile(entry)
+
+    def test_color_normalization_and_bold_switch(self):
+        profile = dict(emphasis_ink='abcDEF', cursor=' AUTO ', user_text_bold=True)
+        env = launcher.profile_environment(profile, {})
+        self.assertEqual(env['CODEX_BLUE_PAPER_EMPHASIS_FG'], '#ABCDEF')
+        self.assertEqual(env['CODEX_BLUE_PAPER_CURSOR'], 'auto')
+        self.assertEqual(env['CODEX_BLUE_PAPER_BOLD'], '1')
+
+    def test_inherited_context_and_explicit_overrides_are_preserved(self):
+        inherited = {'PATH': '/example', 'CODEX_HOME': '/example/shared', 'CODEX_BLUE_PAPER_BG': '#123456'}
+        env = launcher.profile_environment({}, inherited, off=True)
+        self.assertEqual(env['CODEX_HOME'], '/example/shared')
+        self.assertEqual(env['CODEX_BLUE_PAPER_BG'], '#123456')
+        self.assertEqual(env['CODEX_BLUE_PAPER'], '0')
+        self.assertNotIn('CODEX_BLUE_PAPER', inherited)
+
+
+if __name__ == '__main__':
+    unittest.main()

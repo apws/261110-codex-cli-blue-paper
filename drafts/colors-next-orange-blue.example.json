@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "paper": "#D9EBFF",
+  "ink": "#000000",
+  "emphasis_ink": "#A64200",
+  "hint_ink": "#164E82",
+  "cursor": "terminal",
+  "cursor_text": "auto",
+  "user_text_bold": false
+}

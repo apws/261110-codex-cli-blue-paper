@@ -1,20 +1,23 @@
 diff --git a/codex-rs/tui/src/bottom_pane/chat_composer.rs b/codex-rs/tui/src/bottom_pane/chat_composer.rs
-index aa50df3dcea93c426add2323870102f9eb249f1d..df98d3e3dd5c74ac2ccf876b0c605264e9499c81 100644
+index aa50df3dcea93c426add2323870102f9eb249f1d..88dc500c9a71ab8e37e8b020a4706b3816cd33b8 100644
 --- a/codex-rs/tui/src/bottom_pane/chat_composer.rs
 +++ b/codex-rs/tui/src/bottom_pane/chat_composer.rs
-@@ -4979,6 +4979,11 @@ impl ChatComposer {
+@@ -4979,6 +4979,14 @@ impl ChatComposer {
                      .render_ref_masked(textarea_rect, buf, &mut state, mask_char);
              } else {
                  let mut highlights = self.plugin_at_mention_highlights();
 +                if let Some(surface) = crate::style::blue_paper_style() {
 +                    for (_, highlight) in &mut highlights {
-+                        *highlight = highlight.fg(crate::style::accent_color_on(surface.bg));
++                        *highlight = crate::style::user_surface_element_style(
++                            surface.patch(*highlight),
++                            Color::Magenta,
++                        );
 +                    }
 +                }
                  let search_highlight_style =
                      Style::default().add_modifier(Modifier::REVERSED | Modifier::BOLD);
                  highlights.extend(
-@@ -4987,7 +4992,7 @@ impl ChatComposer {
+@@ -4987,7 +4995,7 @@ impl ChatComposer {
                          .chain(self.draft.textarea.vim_search_highlights())
                          .map(|range| (range, search_highlight_style)),
                  );
@@ -23,7 +26,7 @@ index aa50df3dcea93c426add2323870102f9eb249f1d..df98d3e3dd5c74ac2ccf876b0c605264
                      StatefulWidgetRef::render_ref(
                          &(&self.draft.textarea),
                          textarea_rect,
-@@ -4999,7 +5004,7 @@ impl ChatComposer {
+@@ -4999,7 +5007,7 @@ impl ChatComposer {
                          textarea_rect,
                          buf,
                          &mut state,
@@ -32,7 +35,7 @@ index aa50df3dcea93c426add2323870102f9eb249f1d..df98d3e3dd5c74ac2ccf876b0c605264
                          &highlights,
                      );
                  }
-@@ -5016,7 +5021,11 @@ impl ChatComposer {
+@@ -5016,7 +5024,11 @@ impl ChatComposer {
                      .to_string()
              };
              if !textarea_rect.is_empty() {
@@ -45,7 +48,15 @@ index aa50df3dcea93c426add2323870102f9eb249f1d..df98d3e3dd5c74ac2ccf876b0c605264
                  Line::from(vec![placeholder]).render(textarea_rect.inner(Margin::new(0, 0)), buf);
              }
          }
-@@ -5150,6 +5159,81 @@ mod tests {
+@@ -5072,6 +5084,7 @@ impl ChatComposer {
+         if options.footer.is_some_and(|footer| footer.is_interactive) {
+             buf.set_style(composer_rect, Style::default().dim());
+         }
++        crate::style::normalize_blue_composer(buf, composer_rect);
+     }
+ }
+ 
+@@ -5150,6 +5163,133 @@ mod tests {
          );
      }
  
@@ -124,6 +135,58 @@ index aa50df3dcea93c426add2323870102f9eb249f1d..df98d3e3dd5c74ac2ccf876b0c605264
 +        );
 +    }
 +
++    #[test]
++    fn blue_paper_optional_user_text_weight() {
++        use crate::history_cell::HistoryCell as _;
++        const CHILD: &str = "CODEX_BLUE_WEIGHT_TEST_CHILD";
++        const TEST: &str =
++            "bottom_pane::chat_composer::tests::blue_paper_optional_user_text_weight";
++        if std::env::var_os(CHILD).is_none() {
++            for bold in ["0", "1"] {
++                let output = std::process::Command::new(std::env::current_exe().unwrap())
++                    .args(["--exact", TEST])
++                    .env(CHILD, bold)
++                    .env("CODEX_BLUE_PAPER", "1")
++                    .env("CODEX_BLUE_PAPER_BG", "#D9EBFF")
++                    .env("CODEX_BLUE_PAPER_FG", "#000000")
++                    .env("CODEX_BLUE_PAPER_BOLD", bold)
++                    .env("FORCE_COLOR", "3")
++                    .env_remove("NO_COLOR")
++                    .output()
++                    .unwrap();
++                assert!(
++                    output.status.success(),
++                    "{bold}: {}\n{}",
++                    String::from_utf8_lossy(&output.stdout),
++                    String::from_utf8_lossy(&output.stderr)
++                );
++            }
++            return;
++        }
++        let bold = std::env::var(CHILD).unwrap() == "1";
++        let area = Rect::new(0, 0, 80, 8);
++        let (mut composer, _rx) = new_test_composer();
++        let text = "Příliš žluťoučký kůň.";
++        composer.draft.textarea.insert_str(text);
++        let mut typed = Buffer::empty(area);
++        composer.render(area, &mut typed);
++        let history =
++            crate::history_cell::new_user_prompt(text.into(), Vec::new(), Vec::new(), Vec::new());
++        let mut submitted = Buffer::empty(area);
++        Paragraph::new(history.display_lines(area.width)).render(area, &mut submitted);
++        for buffer in [&typed, &submitted] {
++            let cell = buffer
++                .content
++                .iter()
++                .find(|cell| cell.symbol() == "ž")
++                .unwrap();
++            assert_eq!(cell.fg, Color::Rgb(0, 0, 0));
++            assert_eq!(cell.bg, Color::Rgb(217, 235, 255));
++            assert_eq!(cell.modifier.contains(Modifier::BOLD), bold);
++        }
++        assert_eq!(composer.draft.textarea.text(), text);
++    }
++
      #[test]
      fn light_terminal_palette_renders_light_composer_snapshot() {
          let colors = crate::terminal_probe::DefaultColors {
@@ -140,26 +203,232 @@ index b2192697c64104a8f34cabe9b084f28a94c7c262..08a6a25e3aa2e4590dcbedb6a8ca5741
          for (row, idx) in range.clone().enumerate() {
              let r = &lines[idx];
              let y = area.y + row as u16;
+diff --git a/codex-rs/tui/src/custom_terminal.rs b/codex-rs/tui/src/custom_terminal.rs
+index 0607a8ca6aa1f90755952223a2ac0d83f3dd9b4c..af80546d13e0bc13bc8a3762aed0224de2d8e7c0 100644
+--- a/codex-rs/tui/src/custom_terminal.rs
++++ b/codex-rs/tui/src/custom_terminal.rs
+@@ -148,6 +148,8 @@ where
+     pub hidden_cursor: bool,
+     /// Last cursor style sent successfully, so ordinary redraws do not repaint its repair anchor.
+     last_cursor_style: Option<SetCursorStyle>,
++    /// Last opt-in cursor colors, only while the cursor lies over a blue-paper cell.
++    last_blue_cursor: Option<((u8, u8, u8), (u8, u8, u8))>,
+     /// Area of the viewport
+     pub viewport_area: Rect,
+     /// Last known size of the terminal. Used to detect if the internal buffers have to be resized.
+@@ -228,6 +230,7 @@ where
+             current: 0,
+             hidden_cursor: false,
+             last_cursor_style: None,
++            last_blue_cursor: None,
+             viewport_area: Rect::new(
+                 /*x*/ 0,
+                 cursor_pos.y,
+@@ -422,6 +425,7 @@ where
+             }
+         }
+ 
++        self.update_blue_cursor(cursor_position)?;
+         match cursor_position {
+             None if !self.hidden_cursor => self.hide_cursor()?,
+             None => {}
+@@ -462,6 +466,8 @@ where
+ 
+     /// Restores the user-configured terminal cursor style.
+     pub fn reset_cursor_style(&mut self) -> io::Result<()> {
++        crate::style::reset_blue_cursor_colors(&mut self.backend)?;
++        self.last_blue_cursor = None;
+         self.set_cursor_style(SetCursorStyle::DefaultUserShape)
+     }
+ 
+diff --git a/codex-rs/tui/src/custom_terminal/cursor.rs b/codex-rs/tui/src/custom_terminal/cursor.rs
+index 7505870af7724c97226809b7cca997fcccfc642a..5d58ca2bb66c98c6d0d8e33bba16ea85d571cec6 100644
+--- a/codex-rs/tui/src/custom_terminal/cursor.rs
++++ b/codex-rs/tui/src/custom_terminal/cursor.rs
+@@ -24,10 +24,40 @@ where
+ {
+     pub(crate) fn invalidate_cursor_state(&mut self) {
+         self.last_cursor_style = None;
++        self.last_blue_cursor = None;
+         // An external program or screen switch can show a cursor that we believed was hidden.
+         self.hidden_cursor = false;
+     }
+ 
++    /// Apply colors after painting; leave the terminal profile in charge outside blue cells.
++    pub(super) fn update_blue_cursor(&mut self, position: Option<Position>) -> io::Result<()> {
++        let desired = position.and_then(|position| {
++            let buffer = &self.buffers[self.current];
++            buffer
++                .area
++                .contains(position)
++                .then(|| crate::style::blue_cursor_colors(&buffer[(position.x, position.y)]))
++                .flatten()
++        });
++        if desired == self.last_blue_cursor
++            && (desired.is_some() == crate::style::blue_cursor_colors_active())
++        {
++            return Ok(());
++        }
++        if let Some(colors) = desired {
++            if crate::style::set_blue_cursor_colors(&mut self.backend, colors)? {
++                self.last_blue_cursor = desired;
++            } else {
++                crate::style::reset_blue_cursor_colors(&mut self.backend)?;
++                self.last_blue_cursor = None;
++            }
++        } else {
++            crate::style::reset_blue_cursor_colors(&mut self.backend)?;
++            self.last_blue_cursor = None;
++        }
++        Ok(())
++    }
++
+     pub(super) fn set_cursor_style_with_repair(
+         &mut self,
+         cursor_style: SetCursorStyle,
+diff --git a/codex-rs/tui/src/custom_terminal/tests/cursor_tests.rs b/codex-rs/tui/src/custom_terminal/tests/cursor_tests.rs
+index a6fd62b94b81da42ba59198ce1d3a167d01010fa..ecaf89a5404e36c8c0174b21487842009bc56090 100644
+--- a/codex-rs/tui/src/custom_terminal/tests/cursor_tests.rs
++++ b/codex-rs/tui/src/custom_terminal/tests/cursor_tests.rs
+@@ -230,3 +230,103 @@ fn terminal_draw_omits_cursor_style_without_an_owned_glyph() {
+         "\x1b[39m\x1b[49m\x1b[0m\x1b[?25l"
+     );
+ }
++
++#[test]
++fn blue_paper_cursor_lifecycle() {
++    const CHILD: &str = "CODEX_BLUE_CURSOR_TEST_CHILD";
++    const TEST: &str = "custom_terminal::tests::cursor::blue_paper_cursor_lifecycle";
++    if std::env::var_os(CHILD).is_none() {
++        for mode in ["auto", "terminal", "disabled"] {
++            let output = std::process::Command::new(std::env::current_exe().unwrap())
++                .args(["--exact", TEST])
++                .env(CHILD, mode)
++                .env(
++                    "CODEX_BLUE_PAPER",
++                    if mode == "disabled" { "0" } else { "1" },
++                )
++                .env("CODEX_BLUE_PAPER_BG", "#D9EBFF")
++                .env("CODEX_BLUE_PAPER_FG", "#000000")
++                .env(
++                    "CODEX_BLUE_PAPER_CURSOR",
++                    if mode == "terminal" {
++                        "terminal"
++                    } else {
++                        "auto"
++                    },
++                )
++                .env("CODEX_BLUE_PAPER_CURSOR_TEXT", "auto")
++                .env("TERM", "xterm-kitty")
++                .env("FORCE_COLOR", "3")
++                .env_remove("NO_COLOR")
++                .env_remove("TMUX")
++                .env_remove("STY")
++                .output()
++                .unwrap();
++            assert!(
++                output.status.success(),
++                "{mode}: {}\n{}",
++                String::from_utf8_lossy(&output.stdout),
++                String::from_utf8_lossy(&output.stderr)
++            );
++        }
++        return;
++    }
++    let active = std::env::var(CHILD).unwrap() == "auto";
++    let mut terminal = Terminal::with_options(CaptureBackend::new(12, 2)).unwrap();
++    let area = Rect::new(0, 0, 12, 2);
++    terminal.set_viewport_area(area);
++    let blue = Style::default()
++        .fg(Color::Rgb(0, 0, 0))
++        .bg(Color::Rgb(217, 235, 255));
++    let dark = Style::default()
++        .fg(Color::Rgb(224, 224, 224))
++        .bg(Color::Rgb(18, 18, 18));
++    let draw_at = |terminal: &mut Terminal<CaptureBackend>, cursor: Option<(u16, u16)>| {
++        terminal.backend_mut().output.clear();
++        terminal
++            .draw(|frame| {
++                frame.buffer_mut().set_string(0, 0, "blue paper", blue);
++                frame.buffer_mut().set_string(0, 1, "dark field", dark);
++                if let Some(position) = cursor {
++                    frame.set_cursor_position(position);
++                }
++            })
++            .unwrap();
++        terminal.backend().output()
++    };
++    let first = draw_at(&mut terminal, Some((0, 0)));
++    assert_eq!(
++        first.contains("\x1b]21;cursor=#000000;cursor_text=#d9ebff"),
++        active
++    );
++    let unchanged = draw_at(&mut terminal, Some((1, 0)));
++    assert!(!unchanged.contains("\x1b]21;"));
++    let outside = draw_at(&mut terminal, Some((1, 1)));
++    assert_eq!(outside.contains("\x1b]21;cursor;cursor_text"), active);
++    draw_at(&mut terminal, Some((0, 0)));
++    terminal.invalidate_cursor_state();
++    let hidden = draw_at(&mut terminal, None);
++    assert_eq!(hidden.contains("\x1b]21;cursor;cursor_text"), active);
++    draw_at(&mut terminal, Some((0, 0)));
++    terminal.backend_mut().output.clear();
++    // Same reset helper as exit, panic, external-editor and suspend paths.
++    crate::style::reset_blue_cursor_colors(terminal.backend_mut()).unwrap();
++    assert_eq!(
++        terminal
++            .backend()
++            .output()
++            .contains("\x1b]21;cursor;cursor_text"),
++        active
++    );
++    let resumed = draw_at(&mut terminal, Some((0, 0)));
++    assert_eq!(resumed.contains("\x1b]21;cursor=#000000"), active);
++    terminal.backend_mut().output.clear();
++    terminal.reset_cursor_style().unwrap();
++    assert_eq!(
++        terminal
++            .backend()
++            .output()
++            .contains("\x1b]21;cursor;cursor_text"),
++        active
++    );
++}
+diff --git a/codex-rs/tui/src/history_cell/messages.rs b/codex-rs/tui/src/history_cell/messages.rs
+index 66f407a5106afeeace09f0a3a9cbadf3e3fe4187..24003e9ce7674881b76f0b2e80c50daa5744398c 100644
+--- a/codex-rs/tui/src/history_cell/messages.rs
++++ b/codex-rs/tui/src/history_cell/messages.rs
+@@ -168,6 +168,9 @@ fn build_user_message_lines_with_elements(
+ }
+ 
+ fn user_message_element_style(style: Style, accent: Color) -> Style {
++    if crate::style::blue_paper_style().is_some_and(|surface| surface.bg == style.bg) {
++        return crate::style::user_surface_element_style(style, accent);
++    }
+     let unresolved_background = match style.bg {
+         Some(Color::Indexed(index)) => index < 16,
+         Some(Color::Rgb(..) | Color::Reset) | None => false,
 diff --git a/codex-rs/tui/src/style.rs b/codex-rs/tui/src/style.rs
-index 8008042c1c47e8fc6a86d76b753e9d8d7d281c47..8a6cb3e3355a024547bcc66277915817151a65e8 100644
+index 8008042c1c47e8fc6a86d76b753e9d8d7d281c47..82bb19cac2ef54f2dd043c7b396751ba3f6e4130 100644
 --- a/codex-rs/tui/src/style.rs
 +++ b/codex-rs/tui/src/style.rs
-@@ -1,6 +1,7 @@
+@@ -1,6 +1,8 @@
  //! Shared TUI colors and semantic styles, including the picker and transcript accent.
  //! Informative accents meet minimum contrast on known backgrounds and supported palettes.
  
++mod blue_cursor;
 +mod blue_paper;
  mod contrast;
  
  use crate::color::blend;
-@@ -58,7 +59,21 @@ fn status_style_for(
+@@ -58,14 +60,48 @@ fn status_style_for(
  const TABLE_SEPARATOR_FG_ALPHA: f32 = 0.20;
  
  pub fn user_message_style() -> Style {
 -    user_message_style_for(default_bg())
 +    blue_paper_style().unwrap_or_else(|| user_message_style_for(default_bg()))
-+}
-+
+ }
+ 
 +/// Optional local user-surface colors; the stock style remains available when disabled.
 +pub(crate) fn blue_paper_style() -> Option<Style> {
 +    blue_paper::style()
@@ -168,14 +437,31 @@ index 8008042c1c47e8fc6a86d76b753e9d8d7d281c47..8a6cb3e3355a024547bcc66277915817
 +/// Keep text-element emphasis readable on the explicitly colored user surface.
 +pub(crate) fn user_surface_element_style(base: Style, stock: Color) -> Style {
 +    if blue_paper_style().is_some_and(|style| style.bg == base.bg) {
-+        base.fg(accent_color_on(base.bg)).not_dim()
++        base.patch(blue_paper::emphasis_style().unwrap_or_default())
 +    } else {
 +        base.fg(stock)
 +    }
- }
- 
++}
++
++/// Follow controls use the actual custom paper and their own optional ink.
++pub(crate) fn user_follow_control_style() -> Style {
++    blue_paper::hint_style().unwrap_or_else(|| user_message_style().fg(user_message_accent_color()))
++}
++
++pub(crate) fn normalize_blue_composer(
++    buf: &mut ratatui::buffer::Buffer,
++    area: ratatui::layout::Rect,
++) {
++    blue_paper::normalize_composer(buf, area);
++}
++
++pub(crate) use blue_cursor::cursor_colors_active as blue_cursor_colors_active;
++pub(crate) use blue_cursor::reset_cursor_colors as reset_blue_cursor_colors;
++pub(crate) use blue_cursor::set_cursor_colors as set_blue_cursor_colors;
++pub(crate) use blue_paper::cursor_colors as blue_cursor_colors;
++
  /// Submitted prompts use a lighter fill than the editable composer in either theme.
-@@ -66,6 +81,9 @@ pub fn user_message_style() -> Style {
+ ///
  /// Some terminals do not answer the optional default-color probe. Keep submitted prompts shaded
  /// with an ANSI-safe fallback instead of dropping the surface.
  pub(crate) fn history_prompt_style() -> Style {
@@ -185,12 +471,112 @@ index 8008042c1c47e8fc6a86d76b753e9d8d7d281c47..8a6cb3e3355a024547bcc66277915817
      let Some(background) = default_bg() else {
          return Style::default().bg(Color::DarkGray);
      };
+diff --git a/codex-rs/tui/src/style/blue_cursor.rs b/codex-rs/tui/src/style/blue_cursor.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..78d476d5b5ec9c8fffc9400d279a657fe05b72a8
+--- /dev/null
++++ b/codex-rs/tui/src/style/blue_cursor.rs
+@@ -0,0 +1,94 @@
++//! Opt-in cursor colors scoped to blue-paper cells and restored on terminal handoff.
++//! No queries are emitted, so no new terminal input responses need to be consumed.
++
++use super::blue_paper::Rgb;
++use std::io;
++use std::io::Write;
++use std::sync::atomic::AtomicU8;
++use std::sync::atomic::Ordering;
++
++// 0 = untouched, 1 = xterm OSC 12, 2 = Kitty OSC 21 (cursor and cursor text).
++// Shared with the free-standing panic/exit/suspend restore paths.
++static ACTIVE: AtomicU8 = AtomicU8::new(0);
++
++fn protocol() -> u8 {
++    let term = std::env::var("TERM").unwrap_or_default();
++    if std::env::var_os("TMUX").is_some()
++        || std::env::var_os("STY").is_some()
++        || term.starts_with("screen")
++        || term.starts_with("tmux")
++    {
++        return 0;
++    }
++    if term.contains("kitty") || std::env::var_os("KITTY_WINDOW_ID").is_some() {
++        2
++    } else if term.starts_with("xterm") || std::env::var_os("KONSOLE_VERSION").is_some() {
++        1
++    } else {
++        0
++    }
++}
++
++fn set_sequence((cursor, text): (Rgb, Rgb), protocol: u8) -> Option<String> {
++    let (r, g, b) = cursor;
++    match protocol {
++        2 => {
++            let (tr, tg, tb) = text;
++            Some(format!(
++                "\x1b]21;cursor=#{r:02x}{g:02x}{b:02x};cursor_text=#{tr:02x}{tg:02x}{tb:02x}\x1b\\"
++            ))
++        }
++        1 => Some(format!("\x1b]12;#{r:02x}{g:02x}{b:02x}\x1b\\")),
++        _ => None,
++    }
++}
++
++fn reset_sequence(protocol: u8) -> &'static [u8] {
++    match protocol {
++        2 => b"\x1b]21;cursor;cursor_text\x1b\\",
++        1 => b"\x1b]112\x1b\\",
++        _ => b"",
++    }
++}
++
++pub(crate) fn cursor_colors_active() -> bool {
++    ACTIVE.load(Ordering::Relaxed) != 0
++}
++
++pub(crate) fn set_cursor_colors(writer: &mut impl Write, colors: (Rgb, Rgb)) -> io::Result<bool> {
++    let protocol = protocol();
++    let Some(sequence) = set_sequence(colors, protocol) else {
++        return Ok(false);
++    };
++    // Mark ownership before writing so a partial write still triggers a cleanup attempt.
++    ACTIVE.store(protocol, Ordering::Relaxed);
++    writer.write_all(sequence.as_bytes())?;
++    Ok(true)
++}
++
++pub(crate) fn reset_cursor_colors(writer: &mut impl Write) -> io::Result<()> {
++    let protocol = ACTIVE.load(Ordering::Relaxed);
++    if protocol != 0 {
++        writer.write_all(reset_sequence(protocol))?;
++        ACTIVE.store(0, Ordering::Relaxed);
++    }
++    Ok(())
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn blue_paper_cursor_sequences_set_only_owned_colors_and_restore_defaults() {
++        let colors = ((0, 0, 0), (217, 235, 255));
++        assert_eq!(
++            set_sequence(colors, 2).unwrap(),
++            "\x1b]21;cursor=#000000;cursor_text=#d9ebff\x1b\\"
++        );
++        assert_eq!(set_sequence(colors, 1).unwrap(), "\x1b]12;#000000\x1b\\");
++        assert!(set_sequence(colors, 0).is_none());
++        assert_eq!(reset_sequence(2), b"\x1b]21;cursor;cursor_text\x1b\\");
++        assert_eq!(reset_sequence(1), b"\x1b]112\x1b\\");
++    }
++}
 diff --git a/codex-rs/tui/src/style/blue_paper.rs b/codex-rs/tui/src/style/blue_paper.rs
 new file mode 100644
-index 0000000000000000000000000000000000000000..1402b307e629237274cb9d7360b857cb54c90e2e
+index 0000000000000000000000000000000000000000..87ee31aec653f44b316324bf0decf4c554cf9169
 --- /dev/null
 +++ b/codex-rs/tui/src/style/blue_paper.rs
-@@ -0,0 +1,181 @@
+@@ -0,0 +1,423 @@
 +//! Local, opt-in user-message paper/ink colors. Never affects agent/backend behavior.
 +//!
 +//! The external codex-blue wrapper sets these variables before process startup.
@@ -200,11 +586,15 @@ index 0000000000000000000000000000000000000000..1402b307e629237274cb9d7360b857cb
 +use crate::terminal_palette::XTERM_COLORS;
 +use crate::terminal_palette::best_color_for_level;
 +use crate::terminal_palette::effective_stdout_color_level;
++use ratatui::buffer::Buffer;
++use ratatui::buffer::Cell;
++use ratatui::layout::Rect;
 +use ratatui::style::Color;
++use ratatui::style::Modifier;
 +use ratatui::style::Style;
 +use std::sync::OnceLock;
 +
-+type Rgb = (u8, u8, u8);
++pub(crate) type Rgb = (u8, u8, u8);
 +const DEFAULT_PAPER: Rgb = (164, 205, 251);
 +const DEFAULT_INK: Rgb = (16, 24, 32);
 +
@@ -271,6 +661,184 @@ index 0000000000000000000000000000000000000000..1402b307e629237274cb9d7360b857cb
 +    });
 +    let no_color = std::env::var_os("NO_COLOR").is_some_and(|value| !value.is_empty());
 +    style_for(colors, effective_stdout_color_level(), no_color)
++        .map(|style| if options().bold { style.bold() } else { style })
++}
++
++#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
++enum CursorSetting {
++    #[default]
++    Terminal,
++    Auto,
++    Color(Rgb),
++}
++
++impl CursorSetting {
++    fn parse(value: &str) -> Self {
++        match value.trim().to_ascii_lowercase().as_str() {
++            "auto" => Self::Auto,
++            "terminal" => Self::Terminal,
++            _ => parse_hex(value).map_or(Self::Terminal, Self::Color),
++        }
++    }
++}
++
++#[derive(Clone, Copy, Default)]
++struct Options {
++    emphasis: Option<Rgb>,
++    hint: Option<Rgb>,
++    cursor: CursorSetting,
++    cursor_text: Option<Rgb>,
++    bold: bool,
++}
++
++fn options() -> &'static Options {
++    static OPTIONS: OnceLock<Options> = OnceLock::new();
++    OPTIONS.get_or_init(|| {
++        let color = |name| std::env::var(name).ok().as_deref().and_then(parse_hex);
++        Options {
++            emphasis: color("CODEX_BLUE_PAPER_EMPHASIS_FG"),
++            hint: color("CODEX_BLUE_PAPER_HINT_FG"),
++            cursor: CursorSetting::parse(
++                &std::env::var("CODEX_BLUE_PAPER_CURSOR").unwrap_or_else(|_| "terminal".into()),
++            ),
++            cursor_text: color("CODEX_BLUE_PAPER_CURSOR_TEXT"),
++            bold: std::env::var("CODEX_BLUE_PAPER_BOLD")
++                .is_ok_and(|value| matches!(value.as_str(), "1" | "true" | "on")),
++        }
++    })
++}
++
++fn rgb(color: Color) -> Option<Rgb> {
++    match color {
++        Color::Rgb(r, g, b) => Some((r, g, b)),
++        Color::Indexed(index) if index >= 16 => Some(XTERM_COLORS[usize::from(index)]),
++        _ => None,
++    }
++}
++
++fn foreground(preferred: Option<Rgb>, surface: Style) -> Color {
++    preferred.map_or(surface.fg.unwrap_or(Color::Reset), |preferred| {
++        super::contrast::foreground(
++            preferred,
++            surface.bg.and_then(rgb),
++            effective_stdout_color_level(),
++        )
++    })
++}
++
++pub(super) fn emphasis_style() -> Option<Style> {
++    style().map(|surface| surface.fg(foreground(options().emphasis, surface)).bold())
++}
++
++pub(super) fn hint_style() -> Option<Style> {
++    style().map(|surface| surface.fg(foreground(options().hint, surface)).not_bold())
++}
++
++// These are explicit RGB equivalents for semantic ANSI accents on our own surface only.
++// Converting them avoids assuming that an arbitrary terminal ANSI palette fits blue paper.
++fn semantic_rgb(color: Color) -> Option<Rgb> {
++    rgb(color).or_else(|| {
++        Some(match color {
++            Color::Black => (0, 0, 0),
++            Color::Red => (128, 0, 0),
++            Color::Green => (0, 128, 0),
++            Color::Yellow => (128, 128, 0),
++            Color::Blue => (0, 0, 128),
++            Color::Magenta => (128, 0, 128),
++            Color::Cyan => (0, 128, 128),
++            Color::Gray => (192, 192, 192),
++            Color::DarkGray => (128, 128, 128),
++            Color::LightRed => (255, 0, 0),
++            Color::LightGreen => (0, 255, 0),
++            Color::LightYellow => (255, 255, 0),
++            Color::LightBlue => (0, 0, 255),
++            Color::LightMagenta => (255, 0, 255),
++            Color::LightCyan => (0, 255, 255),
++            Color::White => (255, 255, 255),
++            Color::Indexed(index) => XTERM_COLORS[usize::from(index)],
++            Color::Reset | Color::Rgb(..) => return None,
++        })
++    })
++}
++
++fn normalize_for(buf: &mut Buffer, area: Rect, surface: Style, options: Options) {
++    let ink = surface.fg.unwrap_or(Color::Reset);
++    let emphasis = foreground(options.emphasis, surface);
++    let area = area.intersection(buf.area);
++    for y in area.top()..area.bottom() {
++        for x in area.left()..area.right() {
++            let cell = &mut buf[(x, y)];
++            // Do not recolor popups, separate effects, or externally owned graphics cells.
++            if Some(cell.bg) != surface.bg
++                || cell.diff_option == ratatui::buffer::CellDiffOption::Skip
++                || cell.modifier.contains(Modifier::HIDDEN)
++            {
++                continue;
++            }
++            let plain = cell.fg == ink || cell.fg == Color::Reset;
++            cell.fg = if cell.fg == Color::Reset {
++                if cell.modifier.contains(Modifier::BOLD) {
++                    emphasis
++                } else {
++                    ink
++                }
++            } else if semantic_rgb(cell.fg) == Some((255, 255, 255))
++                && cell.modifier.contains(Modifier::BOLD)
++            {
++                emphasis
++            } else if plain {
++                ink
++            } else {
++                foreground(semantic_rgb(cell.fg), surface)
++            };
++            // Dim intensity is terminal-defined and may defeat corrected RGB contrast.
++            cell.modifier.remove(Modifier::DIM);
++            if plain && options.bold {
++                cell.modifier.insert(Modifier::BOLD);
++            }
++        }
++    }
++}
++
++/// Final pass for the composer's own blue cells, after keys, voice and markers have painted.
++/// Keep content, wrapping, selection reversal, underline and non-blue overlays unchanged.
++pub(super) fn normalize_composer(buf: &mut Buffer, area: Rect) {
++    if let Some(surface) = style() {
++        normalize_for(buf, area, surface, *options());
++    }
++}
++
++/// Resolve an opt-in cursor only over the blue composer/history surface, accounting for reversal.
++pub(crate) fn cursor_colors(cell: &Cell) -> Option<(Rgb, Rgb)> {
++    let surface = style()?;
++    if Some(cell.bg) != surface.bg
++        || cell.diff_option == ratatui::buffer::CellDiffOption::Skip
++        || cell.modifier.contains(Modifier::HIDDEN)
++    {
++        return None;
++    }
++    let mut background = rgb(cell.bg)?;
++    let mut ink = rgb(cell.fg).or_else(|| surface.fg.and_then(rgb))?;
++    if cell.modifier.contains(Modifier::REVERSED) {
++        std::mem::swap(&mut background, &mut ink);
++    }
++    let preferred = match options().cursor {
++        CursorSetting::Terminal => return None,
++        CursorSetting::Auto => ink,
++        CursorSetting::Color(color) => color,
++    };
++    let level = effective_stdout_color_level();
++    let cursor = rgb(super::contrast::foreground(
++        preferred,
++        Some(background),
++        level,
++    ))?;
++    let text = rgb(super::contrast::foreground(
++        options().cursor_text.unwrap_or(background),
++        Some(cursor),
++        level,
++    ))?;
++    Some((cursor, text))
 +}
 +
 +#[cfg(test)]
@@ -371,4 +939,163 @@ index 0000000000000000000000000000000000000000..1402b307e629237274cb9d7360b857cb
 +        };
 +        assert!(contrast_ratio((r, g, b), DEFAULT_PAPER) >= 4.5);
 +    }
++
++    #[test]
++    fn blue_paper_light_and_dark_composer_overrides_keep_keys_readable() {
++        for (paper, ink) in [("D9EBFF", "000000"), ("12345A", "FFFFFF")] {
++            let surface = style_for(
++                parse_colors("1", Some(paper), Some(ink)),
++                StdoutColorLevel::TrueColor,
++                false,
++            )
++            .unwrap();
++            let area = Rect::new(0, 0, 5, 1);
++            let mut buf = Buffer::empty(area);
++            buf.set_style(area, surface);
++            buf.set_string(0, 0, "esc", Style::default().fg(Color::White).bold().dim());
++            buf[(3, 0)].set_symbol("x").set_style(surface.reversed());
++            buf[(4, 0)]
++                .set_symbol("o")
++                .set_style(Style::default().bg(Color::Red));
++            let outside = buf[(4, 0)].clone();
++            normalize_for(
++                &mut buf,
++                area,
++                surface,
++                Options {
++                    bold: true,
++                    ..Options::default()
++                },
++            );
++            for x in 0..4 {
++                let cell = &buf[(x, 0)];
++                let (Some(a), Some(b)) = (rgb(cell.fg), rgb(cell.bg)) else {
++                    panic!("RGB expected")
++                };
++                assert!(contrast_ratio(a, b) >= 4.5);
++                assert!(!cell.modifier.contains(Modifier::DIM));
++                assert!(cell.modifier.contains(Modifier::BOLD));
++            }
++            assert_eq!(buf[(0, 0)].symbol(), "e");
++            assert!(buf[(3, 0)].modifier.contains(Modifier::REVERSED));
++            assert_eq!(buf[(4, 0)], outside);
++        }
++    }
++
++    #[test]
++    fn blue_paper_optional_settings_have_conservative_fallbacks() {
++        assert_eq!(CursorSetting::parse("terminal"), CursorSetting::Terminal);
++        assert_eq!(CursorSetting::parse("auto"), CursorSetting::Auto);
++        assert_eq!(
++            CursorSetting::parse("#000000"),
++            CursorSetting::Color((0, 0, 0))
++        );
++        assert_eq!(CursorSetting::parse("\x1b]12;bad"), CursorSetting::Terminal);
++        let surface = style_for(
++            parse_colors("1", Some("D9EBFF"), Some("000000")),
++            StdoutColorLevel::TrueColor,
++            false,
++        )
++        .unwrap();
++        assert_eq!(foreground(None, surface), surface.fg.unwrap());
++    }
 +}
+diff --git a/codex-rs/tui/src/transcript_view/follow_control.rs b/codex-rs/tui/src/transcript_view/follow_control.rs
+index cfc52dd8acacbd587a63a488d77533addbaf022b..5c411d4ae576030331fad4a5c37eca2d8f981ade 100644
+--- a/codex-rs/tui/src/transcript_view/follow_control.rs
++++ b/codex-rs/tui/src/transcript_view/follow_control.rs
+@@ -39,8 +39,7 @@ impl TranscriptView {
+             .pointer
+             .is_some_and(|point| target.contains(point));
+         self.follow_control.area = Some(target);
+-        let style =
+-            crate::style::user_message_style().fg(crate::style::user_message_accent_color());
++        let style = crate::style::user_follow_control_style();
+         let style = if hovered {
+             style.reversed().bold()
+         } else {
+diff --git a/codex-rs/tui/src/transcript_view/follow_control_tests.rs b/codex-rs/tui/src/transcript_view/follow_control_tests.rs
+index 2d8f54eb517f71cd50dde4538dbb6a88aa5eb3c3..bd3456ca1b0f990b3ed8a270e073c8f435c03f6f 100644
+--- a/codex-rs/tui/src/transcript_view/follow_control_tests.rs
++++ b/codex-rs/tui/src/transcript_view/follow_control_tests.rs
+@@ -5,6 +5,7 @@ use crate::history_cell::PlainHistoryCell;
+ use crossterm::event::KeyCode;
+ use crossterm::event::KeyModifiers;
+ use pretty_assertions::assert_eq;
++use ratatui::style::Color;
+ 
+ fn cell(text: &str) -> Arc<dyn HistoryCell> {
+     Arc::new(PlainHistoryCell::new(
+@@ -381,3 +382,46 @@ fn height_changes_backfill_after_empty_click_but_preserve_deliberate_pause() {
+         }
+     }
+ }
++
++#[test]
++fn blue_paper_follow_control_uses_custom_ink_and_preserves_hover() {
++    const CHILD: &str = "CODEX_BLUE_HINT_TEST_CHILD";
++    const TEST: &str = "transcript_view::follow_control::tests::blue_paper_follow_control_uses_custom_ink_and_preserves_hover";
++    if std::env::var_os(CHILD).is_none() {
++        let output = std::process::Command::new(std::env::current_exe().unwrap())
++            .args(["--exact", TEST])
++            .env(CHILD, "1")
++            .env("CODEX_BLUE_PAPER", "1")
++            .env("CODEX_BLUE_PAPER_BG", "#D9EBFF")
++            .env("CODEX_BLUE_PAPER_FG", "#000000")
++            .env("CODEX_BLUE_PAPER_HINT_FG", "#123456")
++            .env("FORCE_COLOR", "3")
++            .env_remove("NO_COLOR")
++            .output()
++            .unwrap();
++        assert!(
++            output.status.success(),
++            "{}\n{}",
++            String::from_utf8_lossy(&output.stdout),
++            String::from_utf8_lossy(&output.stderr)
++        );
++        return;
++    }
++    let cells = vec![cell("one\ntwo\nthree\nfour\nfive")];
++    let mut view = TranscriptView::default();
++    paint(&mut view, &cells, 80);
++    view.scroll(&cells, -2);
++    let buffer = paint(&mut view, &cells, 80);
++    let area = view.follow_control.area.unwrap();
++    let hint = &buffer[(area.x, area.y)];
++    assert_eq!(hint.fg, Color::Rgb(18, 52, 86));
++    assert_eq!(hint.bg, Color::Rgb(217, 235, 255));
++    assert!(!hint.modifier.contains(ratatui::style::Modifier::DIM));
++    mouse(&mut view, &cells, MouseEventKind::Moved, area.x, area.y);
++    let hovered = paint(&mut view, &cells, 80);
++    assert!(
++        hovered[(area.x, area.y)]
++            .modifier
++            .contains(ratatui::style::Modifier::REVERSED)
++    );
++}
+diff --git a/codex-rs/tui/src/tui.rs b/codex-rs/tui/src/tui.rs
+index 019f8204119e52b603f1f8ae405afb25f94305ca..c4b281860c2518ed9f191b909e320c73ab53c4dd 100644
+--- a/codex-rs/tui/src/tui.rs
++++ b/codex-rs/tui/src/tui.rs
+@@ -338,6 +338,9 @@ fn restore_common(
+     handoff: TerminalHandoff,
+ ) -> Result<()> {
+     let mut first_error = ensure_virtual_terminal_processing().err();
++    if let Err(err) = crate::style::reset_blue_cursor_colors(&mut stdout()) {
++        first_error.get_or_insert(err);
++    }
+ 
+     let screen_result = match handoff {
+         TerminalHandoff::KeepScreen if ALTERNATE_SCREEN.is_active() => {
+diff --git a/codex-rs/tui/src/tui/job_control.rs b/codex-rs/tui/src/tui/job_control.rs
+index 4c5a8e8331baa5109cbacfedf18d9deb7bc5ddfa..af5de722fa55db519c1c2951716cc6f7cd6be49c 100644
+--- a/codex-rs/tui/src/tui/job_control.rs
++++ b/codex-rs/tui/src/tui/job_control.rs
+@@ -60,6 +60,7 @@ impl SuspendContext {
+     /// - Update the cached inline cursor row so suspend can place the cursor meaningfully.
+     /// - Trigger SIGTSTP so the process can be resumed and continue drawing with the saved state.
+     pub(crate) fn suspend(&self, alt_screen_active: &Arc<AtomicBool>) -> Result<()> {
++        crate::style::reset_blue_cursor_colors(&mut stdout())?;
+         if alt_screen_active.load(Ordering::Relaxed) {
+             // Leave alt-screen so the terminal returns to the normal buffer while suspended; also turn off alt-scroll.
+             let _ = super::ALTERNATE_SCREEN.leave(&mut stdout());

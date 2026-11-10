@@ -1,0 +1,78 @@
+= codex-blue customizable input palette
+:title: {docname}
+:revdate: 2026-11-10
+:toc:
+
+== Scope and authorization
+
+Falken authorized implementing and rebuilding the prepared palette revision while away from the keyboard, with no further discretionary approval questions. The prior preview and default-weight discussion are preserved in `261110-1700-REVIEW-input-panel-colors.adoc` and `261110-1706-PLAN-next-input-palette.adoc`. The revision is built and installed; automated checks passed. Human visual review of the new executable remains pending until the frontend is restarted/resumed.
+
+The change remains limited to user-message surfaces, their contrast and cursor presentation. Backend, authentication, conversation storage and tool execution behavior are not modified. The ordinary `codex` command remains available. The CLI stays on official source version 0.166.0 and isolated Rust 1.95.0.
+
+== Local settings
+
+The selected profile is:
+
+[source,json]
+----
+{
+  "enabled": true,
+  "paper": "#D9EBFF",
+  "ink": "#000000",
+  "emphasis_ink": "#A64200",
+  "hint_ink": "#164E82",
+  "cursor": "terminal",
+  "cursor_text": "auto",
+  "user_text_bold": false
+}
+----
+
+This keeps the accepted pale-blue paper and normal black text, uses a readable burnt orange for styled elements, and dark blue for the floating backscroll hint. Optional fields default to `auto`, except `cursor` defaults to `terminal` and ordinary bold defaults to `false`; the explicit local orange/blue choices are preferences rather than universal defaults.
+
+Edit `~/.config/codex-blue/colors.json`, then restart codex-blue and resume the conversation. Subsequent profile edits need no compilation. Existing three-key profiles remain valid. The launcher validates hex colors, keyword choices and boolean values, reports unknown keys, and preserves inherited context/configuration. Explicit `CODEX_BLUE_PAPER*` environment overrides retain precedence.
+
+`emphasis_ink` controls text elements, plugin mentions and applicable key-label emphasis inside the input surface. `hint_ink` controls Back to bottom / New activity on its actual custom paper. With `auto`, both follow corrected ordinary ink. `user_text_bold` can be enabled for editable/submitted ordinary text and the placeholder, independently of terminal font family or size.
+
+== Cursor and the character beneath it
+
+At Falken's separate request, `~/.config/kitty/kitty.conf` now specifies:
+
+[source,conf]
+----
+cursor #008000
+cursor_text_color background
+----
+
+Falken reported that the regular-green cursor was visible and later that the character beneath it had improved, before the new executable was installed. These observations concern Kitty's terminal settings. `cursor_text_color background` draws that character using the underlying cell background: pale blue over this composer, and the respective background over other terminal content. Kitty configuration can be reloaded using Ctrl+Shift+F5, independently of a Codex frontend restart.
+
+With the selected JSON `cursor: "terminal"`, codex-blue emits no cursor-color override; both cursor colors remain Kitty-owned. The JSON `cursor_text` field is only used when an application cursor override is enabled. To try that mode, set `cursor` to `auto` or a hex color. Then `cursor_text` accepts `auto` or a requested hex foreground. The draft's contrast correction can darken a very light requested cursor fill against pale paper; terminal mode preserves Kitty's chosen green exactly.
+
+Application cursor overrides are limited to custom-paper cells. They reset when the cursor leaves those cells, is hidden, or the terminal is handed back during exit, panic cleanup, external-program use or Ctrl+Z suspension. Kitty supports independently requested cursor fill/text through its documented OSC 21 protocol; the xterm-compatible fallback changes fill only. Unknown terminals and detected screen/tmux sessions retain terminal control. Forced termination cannot execute cleanup.
+
+The relevant terminal references are https://sw.kovidgoyal.net/kitty/conf/#opt-kitty.cursor[Kitty cursor configuration], https://sw.kovidgoyal.net/kitty/color-stack/[Kitty color controls] and https://invisible-island.net/xterm/ctlseqs/ctlseqs.html[xterm control sequences]. No remote-control permissions or broader Kitty theme/font settings were enabled.
+
+== Rendering behavior and boundaries
+
+The composer resolves independent named/RGB foregrounds against its actual custom paper. It keeps semantic accents readable, removes terminal-dependent dimming inside its custom-paper cells, and preserves content, wrapping, selection reversal and underline. Different-background overlays and externally owned graphics cells are excluded. An interactive footer consequently no longer dims the blue composer cells. Status hints outside the blue area keep their normal styling.
+
+The optional user-text weight and element emphasis apply to user history too. This does not provide a full palette for every rich asynchronous-reply or spoken-message presentation. The generated design mock-up is a color proposal, not a captured running UI. The original initial-release previews and acceptance evidence remain preserved separately.
+
+== Build and verification
+
+The incremental CLI rebuild reused existing dependency artifacts and completed in 54.261 seconds. The audited internal lockfile normalization and locked external dependency versions remain unchanged. Focused checks passed: 12 palette/widget/cursor checks, one stock light-composer snapshot, and seven cursor-output checks (19 distinct Rust tests because the cursor lifecycle check occurs in two filters), plus four Python profile checks. Test compilation took 130.619 seconds with cached dependencies; actual palette execution took approximately 0.05 seconds. The stock-composer check took 1.267 seconds including Cargo startup, and the corrected cursor-output check took 0.940 seconds.
+
+The first cursor-output run had four failures because the headless tool runner inherited `NO_COLOR=1`, suppressing color/reset sequences required by the upstream snapshots. The test helper now explicitly uses color-enabled capture (`NO_COLOR` unset, `FORCE_COLOR=3`). The seven cursor checks then passed with unchanged Rust source and unchanged snapshots. Explicit no-color fallback coverage remains in the palette tests. The failed run is retained in its result manifest and local log; it did not install a release.
+
+Package-native `--version` and `--help` startup checks passed outside the restricted sandbox using an isolated probe home. Installed `--blue-info` reports profile schema 2 and the selected settings. Version checks for the installed launcher, its `--blue-off` path, and ordinary `/usr/bin/codex` all report 0.166.0; these latter restricted-sandbox commands emitted the known read-only PATH-alias warning. No authentication or history was copied into probe artifacts.
+
+Installed release: `~/.local/share/codex-blue/releases/0.166.0-019443dc128f`. Patch SHA-256: `019443dc128f4ee4204b5dc4fa64e8859f5f09c691becdc1a8870d444c894670`. Binary SHA-256: `cbb8c2983088ce46c26b3fdca081569b9c1855571db5c8293ffe648001bdd6ac`. The launcher/profile and package use schema 2. See `reports/final.json`, `reports/validation.json` and `reports/installed.json` for machine-readable evidence.
+
+The build helper clears all palette configuration variables from test subprocesses so the running frontend's profile cannot contaminate stock-rendering checks. Build and test records include the exact UI-diff checksum. Packaging requires successful checks for that same patch and binary, profile schema 2, and the new feature strings in the executable. This avoids accepting an old test result or cached initial-release binary.
+
+The progress viewer distinguishes this rebuild's records from the earlier accepted workflow. Run `tools/status --follow`; it reuses the baseline stage and waits for review of the new release instead of incorrectly showing the old acceptance as completion.
+
+== Rollback and preserved evidence
+
+The previous installed release remains in `~/.local/share/codex-blue/releases/0.166.0-8376a70f3b52`. Initial manifests are archived under `reports/initial-release/`, original native buffers under `output/initial-release/`, and the initial patch under `patches/archive/user-paper-v1.patch`. The matching old launcher and configuration backups are in the ignored `.build/backups/palette-v1/` directory; the previous release pointer is recorded there too.
+
+Ordinary `codex` is the immediate stock fallback. Reverting to the first blue release also requires its matching saved launcher, since the new launcher checks profile-schema compatibility. Saved blue-paper settings can be restored without altering authentication or conversations.

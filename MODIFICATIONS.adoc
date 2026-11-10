@@ -3,7 +3,7 @@
 
 This is an unofficial local customization of OpenAI Codex CLI, prepared for Falken / mixworx.net on 2026-11-10. It is independently maintained and is not an OpenAI-endorsed release.
 
-The tested upstream baseline is tag `rust-v0.166.0`, commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`. The distributed link:patches/user-paper.patch[unified diff] prominently identifies the changed files and every changed line; the validated patch is retained byte-for-byte with SHA-256 `8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275`.
+The tested upstream baseline is tag `rust-v0.166.0`, commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`. The distributed link:patches/user-paper.patch[unified diff] prominently identifies the changed files and every changed line; the current validated patch has SHA-256 `019443dc128f4ee4204b5dc4fa64e8859f5f09c691becdc1a8870d444c894670`. The initial patch is retained byte-for-byte in `patches/archive/user-paper-v1.patch` with SHA-256 `8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275`.
 
 * `codex-rs/tui/src/style.rs`: opt-in custom paper/ink styles for user messages and readable element emphasis.
 * `codex-rs/tui/src/style/blue_paper.rs`: new local color parsing, contrast/fallback policy and focused tests.
@@ -11,5 +11,7 @@ The tested upstream baseline is tag `rust-v0.166.0`, commit `6ff1e1ca3b30fc8b914
 * `codex-rs/tui/src/bottom_pane/textarea.rs`: keep text-element emphasis readable on the custom surface.
 
 The scripts, documentation, previews and experiment reports in this repository support that local modification. A separately disclosed build-time lockfile normalization updates stale local-package release labels only; external versions, sources, checksums and dependency lists remain unchanged. The default installed Codex command is preserved.
+
+The palette revision adds optional emphasis/hint/cursor colors, ordinary user-text weight, composer contrast normalization and cursor restoration hooks. It also changes user-history styling, the follow-control widget, the custom-terminal layer and terminal handoff paths. The original prepared draft is retained as `patches/user-paper-next.patch`; its patch bytes match the now-validated current patch. See link:reports/final.json[the final verification manifest] and link:docs/261110-1743-BUILD-custom-input-palette.adoc[the release handover]. The installed release uses profile schema 2; human visual review of the new executable remains pending.
 
 Upstream copyright, license and NOTICE attribution remain with their respective holders. The root LICENSE applies Apache-2.0 to this repository's patch and original supporting code. The upstream LICENSE and NOTICE are also retained verbatim as `UPSTREAM-LICENSE` and `UPSTREAM-NOTICE`. No trademark rights or OpenAI endorsement are claimed.

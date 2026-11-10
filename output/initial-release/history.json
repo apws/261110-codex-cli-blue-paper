@@ -1,0 +1,3846 @@
+{
+  "width": 80,
+  "height": 8,
+  "cells": [
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "›",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "BOLD | DIM"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "BOLD | DIM"
+    },
+    {
+      "text": "P",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ř",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "í",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "l",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "i",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "š",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ž",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "l",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "u",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ť",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "o",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "u",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "č",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "k",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ý",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "k",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ů",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ň",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ú",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "p",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ě",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "l",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ď",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "á",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "b",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "e",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "l",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "s",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "k",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "é",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "ó",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "d",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "y",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": ".",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "P",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "l",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "e",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "a",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "s",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "e",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "c",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "h",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "e",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "c",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "k",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "F",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "i",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "r",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "s",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "t",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "Z",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "8",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": "0",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": ".",
+      "fg": "Rgb(16, 24, 32)",
+      "bg": "Rgb(164, 205, 251)",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    },
+    {
+      "text": " ",
+      "fg": "Reset",
+      "bg": "Reset",
+      "modifiers": "NONE"
+    }
+  ]
+}

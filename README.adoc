@@ -5,17 +5,21 @@
 
 Licensed under link:LICENSE[Apache-2.0]. Upstream attribution is preserved in link:NOTICE[NOTICE] and link:UPSTREAM-NOTICE[UPSTREAM-NOTICE]. See link:MODIFICATIONS.adoc[the modification notice] for exactly what changed. The recorded absolute paths and screenshots describe Falken's tested local installation; they are not prerequisites for another user's home directory.
 
-image::output/native-composer-preview.png[Codex user input with light-blue paper and dark ink,width=1000]
+image::output/next-palette-orange-blue-green-preview.png[Color proposal for codex-blue input with orange emphasis and a blue hint,width=1100]
 
-Built, checked and installed as `/home/falken/.local/bin/codex-blue`. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The ordinary `codex` remains available. Falken confirmed the actual terminal appearance and resumed this same conversation in codex-blue on 2026-11-10 at 16:31; all six stages are complete. See link:output/terminal-accepted-261110-1631.png[the acceptance screenshot].
+_Illustrative mock-up of the selected colors, not a terminal capture._
 
-Target colors: light-blue user-message paper `#A4CDFB` and dark ink `#101820`, adjustable in an explicit `codex-blue` wrapper. Keep both editable and submitted user messages readable; preserve a stock fallback.
+Built, checked and installed as `/home/falken/.local/bin/codex-blue`. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The current profile-schema-2 release adds configurable emphasis, hint and cursor colors plus optional bold user text. Nineteen distinct focused Rust checks and four Python profile checks passed. New frontend visual review remains pending; the ordinary `codex` and the first blue release remain available.
+
+Current local colors: lighter-blue user-message paper `#D9EBFF`, black ink `#000000`, orange emphasis `#A64200` and dark-blue hint ink `#164E82`, adjustable in the explicit `codex-blue` wrapper. Falken confirmed the revised profile after restarting on 2026-11-10. The original build and previews used `#A4CDFB` / `#101820`. See link:docs/261110-1700-REVIEW-input-panel-colors.adoc[the input-panel color audit] for coverage and remaining independent styles.
 
 The ignored `.build` directory is a nested Btrfs subvolume for regenerable toolchain, sources and artifacts. The inspected Snapper configuration covers `/`; home is a separate subvolume. No Snapper policy was changed.
 
-Read link:docs/261110-1620-BUILD-Codex-blue-paper-local.adoc[the handover, measured timings and verification], or view link:output/native-composer-preview.png[the real composer test-buffer preview]. Seven selected rendering/color checks passed; the full Codex workspace suite was not run, as agreed.
+Read link:docs/261110-1743-BUILD-custom-input-palette.adoc[the current handover, settings and verification]. The incremental CLI build took 54 seconds. The initial link:docs/261110-1620-BUILD-Codex-blue-paper-local.adoc[build handover] and link:output/terminal-accepted-261110-1631.png[accepted terminal screenshot] remain as historical evidence; the full Codex workspace suite was not run, as agreed.
 
-Run `codex-blue` to start, `codex-blue --blue-info` for identity/profile, or `codex-blue --blue-off` for stock rendering in the custom executable. Colors are editable in `~/.config/codex-blue/colors.json` without recompilation. The simple rollback is ordinary `codex`.
+Run `codex-blue` to start, `codex-blue --blue-info` for identity/profile, or `codex-blue --blue-off` for stock rendering in the custom executable. Colors are editable in `~/.config/codex-blue/colors.json` without recompilation; restart the frontend and resume the chat to apply edits. It supports `emphasis_ink`, `hint_ink`, `cursor`, `cursor_text` and `user_text_bold` in addition to paper and ink. With `cursor: "terminal"`, Kitty controls both cursor colors; Falken selected green and background-colored text beneath it in Kitty settings. The simple rollback is ordinary `codex`.
+
+The link:docs/261110-1706-PLAN-next-input-palette.adoc[palette design plan] and `drafts/` examples preserve the proposal. It is now implemented in the active patch and launcher; the release handover supersedes their earlier uncompiled status.
 
 == Live progress
 

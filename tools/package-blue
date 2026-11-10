@@ -55,6 +55,9 @@ def main():
     assert validation['binary_sha256'] == sha(args.binary), 'Binary differs from validated build.'
     with args.binary.open('rb') as stream, mmap.mmap(stream.fileno(), 0, access=mmap.ACCESS_READ) as data:
         assert data.find(b'CODEX_BLUE_PAPER_BG') >= 0, 'Custom feature absent; cached baseline rejected.'
+        assert data.find(b'CODEX_BLUE_PAPER_CURSOR_TEXT') >= 0, 'Profile-v2 cursor support absent.'
+        assert data.find(b'CODEX_BLUE_PAPER_HINT_FG') >= 0, 'Profile-v2 hint support absent.'
+    assert validation.get('profile_schema') == 2, 'Profile-v2 validation required.'
     probe_home = BUILD / 'probe-package-home'
     probe_home.mkdir(exist_ok=True)
     probe_env = os.environ.copy()
@@ -75,11 +78,12 @@ def main():
                     patch_sha256=patch_sha, binary_sha256=binary_sha,
                     target='x86_64-unknown-linux-gnu', official_helpers_target=helper_target,
                     validation_sha256=sha(args.validation), profile='dev-small',
+                    profile_schema=2,
                     note='Local color-only source patch; bundled helpers/resources from the matching official package.')
     if destination.exists():
         assert destination.is_dir() and not destination.is_symlink()
         previous = json.loads((destination / 'codex-blue.json').read_text())
-        for key in ('version', 'source_commit', 'patch_sha256', 'binary_sha256', 'target', 'official_helpers_target', 'profile'):
+        for key in ('version', 'source_commit', 'patch_sha256', 'binary_sha256', 'target', 'official_helpers_target', 'profile', 'profile_schema'):
             assert previous[key] == manifest[key], f'Existing package differs: {key}'
         assert sha(destination / 'bin/codex') == binary_sha
         manifest = previous
@@ -99,14 +103,17 @@ def main():
     profile = Path.home() / '.config/codex-blue/colors.json'
     profile.parent.mkdir(parents=True, exist_ok=True)
     if not profile.exists():
-        profile.write_text(json.dumps(dict(enabled=True, paper='#A4CDFB', ink='#101820'), indent=2) + '\n')
+        profile.write_text(json.dumps(dict(enabled=True, paper='#D9EBFF', ink='#000000',
+                                          emphasis_ink='auto', hint_ink='auto', cursor='terminal',
+                                          cursor_text='auto', user_text_bold=False), indent=2) + '\n')
     launcher = Path.home() / '.local/bin/codex-blue'
     launcher.parent.mkdir(parents=True, exist_ok=True)
     previous_launcher = base / 'launcher.py'
     if launcher.exists() or launcher.is_symlink():
         assert launcher.is_symlink() and launcher.resolve() == previous_launcher.resolve(), 'Existing unrelated codex-blue launcher left intact.'
-    shutil.copy2(ROOT / 'tools/launcher.py', previous_launcher)
-    previous_launcher.chmod(0o755)
+    pending_launcher = base / '.launcher-pending.py'
+    shutil.copy2(ROOT / 'tools/launcher.py', pending_launcher)
+    pending_launcher.chmod(0o755)
     if not launcher.is_symlink():
         launcher.symlink_to(previous_launcher)
     current = base / 'current'
@@ -115,6 +122,7 @@ def main():
     assert not pending.exists() and not pending.is_symlink()
     pending.symlink_to(destination)
     os.replace(pending, current)
+    os.replace(pending_launcher, previous_launcher)
     (ROOT / 'reports/installed.json').write_text(json.dumps(dict(path=str(destination), **manifest), indent=2) + '\n')
     print('Installed explicit launcher:', launcher)
 
