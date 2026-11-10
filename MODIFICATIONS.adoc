@@ -1,0 +1,15 @@
+= codex-blue modification notice
+:title: {docname}
+
+This is an unofficial local customization of OpenAI Codex CLI, prepared for Falken / mixworx.net on 2026-11-10. It is independently maintained and is not an OpenAI-endorsed release.
+
+The tested upstream baseline is tag `rust-v0.166.0`, commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`. The distributed link:patches/user-paper.patch[unified diff] prominently identifies the changed files and every changed line; the validated patch is retained byte-for-byte with SHA-256 `8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275`.
+
+* `codex-rs/tui/src/style.rs`: opt-in custom paper/ink styles for user messages and readable element emphasis.
+* `codex-rs/tui/src/style/blue_paper.rs`: new local color parsing, contrast/fallback policy and focused tests.
+* `codex-rs/tui/src/bottom_pane/chat_composer.rs`: apply the optional surface to the typing area, its mentions and placeholder; add the native widget test.
+* `codex-rs/tui/src/bottom_pane/textarea.rs`: keep text-element emphasis readable on the custom surface.
+
+The scripts, documentation, previews and experiment reports in this repository support that local modification. A separately disclosed build-time lockfile normalization updates stale local-package release labels only; external versions, sources, checksums and dependency lists remain unchanged. The default installed Codex command is preserved.
+
+Upstream copyright, license and NOTICE attribution remain with their respective holders. The root LICENSE applies Apache-2.0 to this repository's patch and original supporting code. The upstream LICENSE and NOTICE are also retained verbatim as `UPSTREAM-LICENSE` and `UPSTREAM-NOTICE`. No trademark rights or OpenAI endorsement are claimed.

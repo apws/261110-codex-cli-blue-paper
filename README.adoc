@@ -1,6 +1,10 @@
 = codex-blue: local CLI user-message colors
 :title: {docname}
 
+*Unofficial customization of https://github.com/openai/codex[OpenAI Codex CLI].* This independently maintained project is not affiliated with or endorsed by OpenAI. It publishes a small user-message color patch, local build/reapply scripts and a documented experiment; it does not publish the downloaded upstream checkout or compiled executables.
+
+Licensed under link:LICENSE[Apache-2.0]. Upstream attribution is preserved in link:NOTICE[NOTICE] and link:UPSTREAM-NOTICE[UPSTREAM-NOTICE]. See link:MODIFICATIONS.adoc[the modification notice] for exactly what changed. The recorded absolute paths and screenshots describe Falken's tested local installation; they are not prerequisites for another user's home directory.
+
 Built, checked and installed as `/home/falken/.local/bin/codex-blue`. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The ordinary `codex` remains available. Falken confirmed the actual terminal appearance and resumed this same conversation in codex-blue on 2026-11-10 at 16:31; all six stages are complete. See link:output/terminal-accepted-261110-1631.png[the acceptance screenshot].
 
 Target colors: light-blue user-message paper `#A4CDFB` and dark ink `#101820`, adjustable in an explicit `codex-blue` wrapper. Keep both editable and submitted user messages readable; preserve a stock fallback.

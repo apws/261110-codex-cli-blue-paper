@@ -1,0 +1,13 @@
+OpenAI Codex
+Copyright 2025 OpenAI
+
+This project includes code derived from [Ratatui](https://github.com/ratatui/ratatui), licensed under the MIT license.
+Copyright (c) 2016-2022 Florian Dehau
+Copyright (c) 2023-2025 The Ratatui Developers
+
+
+codex-blue
+Unofficial local user-message color customization and supporting build tools.
+Modifications prepared for Falken / mixworx.net, 2026-11-10.
+See MODIFICATIONS.adoc for the changed files and tested upstream baseline.
+This project is independently maintained and is not endorsed by OpenAI.
