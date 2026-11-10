@@ -21,6 +21,7 @@ def run(args, cwd=None, capture=False):
 
 
 def prepare(version):
+    assert run(['git', 'remote', 'get-url', 'origin'], REPO, True).stdout.strip() == 'https://github.com/openai/codex.git'
     tag = 'rust-v' + version
     if run(['git', 'tag', '-l', tag], REPO, True).stdout.strip() != tag:
         run(['git', 'fetch', '--depth', '1', 'origin', f'refs/tags/{tag}:refs/tags/{tag}'], REPO)

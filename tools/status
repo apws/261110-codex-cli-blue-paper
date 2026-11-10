@@ -47,6 +47,8 @@ def show():
             stage = 6
     failed = result is not None and result['exit_code'] != 0
     line(f'codex-blue / stage {stage} of 6' + (' / STOPPED: review failure' if failed else ''))
+    if stage == 6:
+        line('READY: codex-blue is installed; build and focused checks have finished.')
     stages = ['Source + Rust + approved colour preview', 'Unmodified CLI baseline build',
               'Patched CLI build', 'Focused colour/rendering checks',
               'Package + install codex-blue', 'Review in your terminal + handover']
@@ -56,31 +58,39 @@ def show():
             label += ' (patch draft ready)'
         line(f'  [{state}] {number}. {label}')
     if logs:
-        overall = (now - stamp(logs[0])).total_seconds()
+        start_record = ROOT / 'reports/workflow-start.json'
+        started = datetime.datetime.fromisoformat(json.loads(start_record.read_text())['started_utc']) if start_record.exists() else stamp(logs[0])
+        overall = (now - started).total_seconds()
         elapsed = (now - stamp(log)).total_seconds()
         line()
         line(f'Workflow elapsed: {duration(overall)} | Latest build/check: {duration(elapsed)}')
         if stage < 6 and not failed:
             low, high = max(0, 3600 - overall), max(0, 10800 - overall)
+            stage_allowance = {3: (20, 60), 4: (10, 40), 5: (2, 10)}
+            if stage in stage_allowance:
+                low, high = (max(0, minutes * 60 - (elapsed if result is None else 0)) for minutes in stage_allowance[stage])
             if high:
                 line(f'Rough remaining planning window: {duration(low)} - {duration(high)}')
-                line('  Based on the original 1-3h allowance, not a measured compiler ETA.')
+                line('  Stage-based allowance with cached dependencies; not a compiler ETA.' if stage in stage_allowance else
+                     '  Based on the original 1-3h allowance, not a measured compiler ETA.')
             else:
                 line('Initial time allowance exceeded; a reliable ETA is not available yet.')
         compiled = sum(bool(re.search(r'\bCompiling\s', value)) for value in content)
         line(f'Compiler steps reported in this log: {compiled} (not a time percentage)')
         if result:
             line(f'Latest result: exit {result["exit_code"]}, duration {duration(result["seconds"])}')
-        line('Latest compiler activity:')
+        line('Last completed check:' if result else 'Latest compiler activity:')
         for value in content[-6:]:
             # Keep the crate/version visible instead of wrapping long absolute source paths.
             value = re.sub(r'(Compiling \S+ v\S+) \(/home/.*', r'\1', value)
             line('  ' + value.strip())
-        line(f'Log idle: {round(time.time() - log.stat().st_mtime)}s (long crates/linking can be quiet)')
+        if result is None:
+            line(f'Log idle: {round(time.time() - log.stat().st_mtime)}s (long crates/linking can be quiet)')
         line('Log: reports/' + log.name)
     mem = dict((k, v.strip()) for k, v in (value.split(':', 1) for value in Path('/proc/meminfo').read_text().splitlines()))
     line(f'Available RAM: {int(mem["MemAvailable"].split()[0]) / 2**20:.1f} GiB | Disk: {shutil.disk_usage(ROOT).free / 2**30:.1f} GiB')
-    line('Ctrl+C stops this viewer only; the build continues.')
+    line('Ctrl+C closes this viewer; run codex-blue to try the installed UI.' if stage == 6 else
+         'Ctrl+C stops this viewer only; the build continues.')
 
 
 parser = argparse.ArgumentParser(description=__doc__)

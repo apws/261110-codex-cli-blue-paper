@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import mmap
 import os
 from pathlib import Path
 import shutil
@@ -52,33 +53,49 @@ def main():
     patch_sha = sha(ROOT / 'patches/user-paper.patch')
     assert validation['patch_sha256'] == patch_sha
     assert validation['binary_sha256'] == sha(args.binary), 'Binary differs from validated build.'
-    version_output = subprocess.check_output([str(args.binary), '--version'], text=True).strip()
+    with args.binary.open('rb') as stream, mmap.mmap(stream.fileno(), 0, access=mmap.ACCESS_READ) as data:
+        assert data.find(b'CODEX_BLUE_PAPER_BG') >= 0, 'Custom feature absent; cached baseline rejected.'
+    probe_home = BUILD / 'probe-package-home'
+    probe_home.mkdir(exist_ok=True)
+    probe_env = os.environ.copy()
+    probe_env['CODEX_HOME'] = str(probe_home)
+    version_output = subprocess.check_output([str(args.binary), '--version'], text=True, env=probe_env).strip()
     assert version_output == 'codex-cli ' + args.version, version_output
-    subprocess.run([str(args.binary), '--help'], check=True, stdout=subprocess.DEVNULL)
+    subprocess.run([str(args.binary), '--help'], check=True, stdout=subprocess.DEVNULL, env=probe_env)
     vendor = official_package(args.version)
     base = Path.home() / '.local/share/codex-blue'
     releases = base / 'releases'
     releases.mkdir(parents=True, exist_ok=True)
     destination = releases / f'{args.version}-{patch_sha[:12]}'
-    assert not destination.exists(), f'Existing release left intact: {destination}'
-    staging = Path(tempfile.mkdtemp(prefix='.staging-', dir=releases))
-    shutil.copytree(vendor, staging, dirs_exist_ok=True, symlinks=True)
-    helper_target = json.loads((staging / 'codex-package.json').read_text())['target']
-    shutil.copy2(args.binary, staging / 'bin/codex')
-    metadata_path = staging / 'codex-package.json'
-    metadata = json.loads(metadata_path.read_text())
-    metadata['target'] = 'x86_64-unknown-linux-gnu'
-    metadata_path.write_text(json.dumps(metadata, indent=2) + '\n')
-    for name in ('LICENSE', 'NOTICE'):
-        if (args.source / name).exists():
-            shutil.copy2(args.source / name, staging / ('UPSTREAM-' + name))
+    binary_sha = sha(args.binary)
+    if destination.exists() and sha(destination / 'bin/codex') != binary_sha:
+        destination = releases / f'{args.version}-{patch_sha[:12]}-{binary_sha[:10]}'
+    helper_target = json.loads((vendor / 'codex-package.json').read_text())['target']
     manifest = dict(version=args.version, source_commit=validation['source_commit'],
-                    patch_sha256=patch_sha, binary_sha256=sha(staging / 'bin/codex'),
+                    patch_sha256=patch_sha, binary_sha256=binary_sha,
                     target='x86_64-unknown-linux-gnu', official_helpers_target=helper_target,
                     validation_sha256=sha(args.validation), profile='dev-small',
                     note='Local color-only source patch; bundled helpers/resources from the matching official package.')
-    (staging / 'codex-blue.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    os.replace(staging, destination)
+    if destination.exists():
+        assert destination.is_dir() and not destination.is_symlink()
+        previous = json.loads((destination / 'codex-blue.json').read_text())
+        for key in ('version', 'source_commit', 'patch_sha256', 'binary_sha256', 'target', 'official_helpers_target', 'profile'):
+            assert previous[key] == manifest[key], f'Existing package differs: {key}'
+        assert sha(destination / 'bin/codex') == binary_sha
+        manifest = previous
+    else:
+        staging = Path(tempfile.mkdtemp(prefix='.staging-', dir=releases))
+        shutil.copytree(vendor, staging, dirs_exist_ok=True, symlinks=True)
+        shutil.copy2(args.binary, staging / 'bin/codex')
+        metadata_path = staging / 'codex-package.json'
+        metadata = json.loads(metadata_path.read_text())
+        metadata['target'] = 'x86_64-unknown-linux-gnu'
+        metadata_path.write_text(json.dumps(metadata, indent=2) + '\n')
+        for name in ('LICENSE', 'NOTICE'):
+            if (args.source / name).exists():
+                shutil.copy2(args.source / name, staging / ('UPSTREAM-' + name))
+        (staging / 'codex-blue.json').write_text(json.dumps(manifest, indent=2) + '\n')
+        os.replace(staging, destination)
     profile = Path.home() / '.config/codex-blue/colors.json'
     profile.parent.mkdir(parents=True, exist_ok=True)
     if not profile.exists():

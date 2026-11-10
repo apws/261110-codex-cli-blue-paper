@@ -1,0 +1,89 @@
+= codex-blue built, checked and installed locally
+:title: {docname}
+:revdate: 2026-11-10
+:toc:
+
+== Use the installed program
+
+Run `codex-blue`, or `/home/falken/.local/bin/codex-blue` if needed. The explicit launcher selects the validated custom package. Ordinary `codex` remains available and was rechecked as version `0.166.0`.
+
+[source,shell]
+----
+codex-blue
+codex-blue --blue-info
+codex-blue --blue-off
+----
+
+`--blue-info` prints the local build identity and color profile. `--blue-off` starts this custom executable with its color feature disabled; ordinary `codex` is the simple rollback to the original installed program. To continue an existing conversation, use Codex's usual resume picker or `codex-blue resume --last` after exiting its old frontend. The implementation did not copy authentication files or conversation history into test artifacts.
+
+Colors live in `/home/falken/.config/codex-blue/colors.json`:
+
+[source,json]
+----
+{
+  "enabled": true,
+  "paper": "#A4CDFB",
+  "ink": "#101820"
+}
+----
+
+Edit that profile and restart codex-blue to change the colors; no recompilation is required. The local wrapper also accepts the patch's `CODEX_BLUE_PAPER`, `CODEX_BLUE_PAPER_BG` and `CODEX_BLUE_PAPER_FG` environment overrides. These are custom additions, not upstream Codex config keys. Invalid hex or disabled/unsupported color output falls back to upstream rendering. Ink that has insufficient contrast against the selected paper is adjusted by the existing upstream contrast helper. `NO_COLOR` disables the custom surface.
+
+Falken approved the original light-blue/dark-ink PNG. The link:../output/native-composer-preview.png[native composer preview] was then rendered from the actual Codex widget test buffer. It is not a capture of Falken's terminal. The installed launcher is ready; a new-terminal check was requested, and human terminal acceptance remains pending when this note is written.
+
+== Build identity and scope
+
+The source is official tag `rust-v0.166.0`, commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, built with isolated Rust `1.95.0`. The custom binary SHA-256 is `ef3d45905efc70eb5a95c34dbc2a3a7620345ce73afd20a9893a4ea56eba9333`. The UI patch SHA-256 is `8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275`.
+
+The source patch touches only four TUI files: the shared style module, the new blue-paper style helper, composer rendering and textarea element rendering. The added widget test is within the composer test module. Authentication, model communication, prompts, permissions, tool execution and session serialization are not changed by that patch. The separate release-lock metadata adjustment is described in link:261110-1352-NOTE-release-lockfile-normalization.adoc[its note]; external package versions/checksums and dependency lists were retained.
+
+This is a local `x86_64-unknown-linux-gnu`, `dev-small` build, with matching official `0.166.0` helpers/resources copied from the installed musl package. The CLI target does not compile V8; the existing official code-mode helper is retained. It is not an optimized official release or a bit-for-bit reproduction of one. Package identity, helper target and validation hashes are in link:../reports/installed.json[the installation manifest].
+
+== Measured build times
+
+[cols="3,1,4",options="header"]
+|===
+|Stage |Seconds |Interpretation
+|Initial dependency fetch / locked attempt |718.061 |Downloaded pinned source dependencies, then stopped on stale internal release labels. No executable was produced.
+|Baseline compilation |620.742 |About 10 minutes 21 seconds, with the audited lock-label normalization and unchanged application source.
+|First patched command, rejected |13.003 |Shared-cache freshness incorrectly reused the baseline executable. This artifact was identified and rejected before installation.
+|Accepted patched rebuild |60.287 |About one minute; UI crate, CLI and affected dependent crate rebuilt. Custom marker present; binary differs from the baseline.
+|First focused-test build and run |509.939 |About 8 minutes 30 seconds, mainly compiling the library test harness. Six selected tests passed; actual execution reported 0.04 seconds.
+|Existing stock-color regression |1.492 |One selected test passed; actual execution reported 0.01 seconds.
+|===
+
+These are measurements of this machine/source/profile and retained cache, not a benchmark for arbitrary future releases. Overall session elapsed time also includes setup, investigation, the preview, monitor work, review and documentation.
+
+Free disk was about 487 GiB before setup and about 470 GiB after the installed build, so observed filesystem consumption grew by roughly 17 GiB across toolchain, fetched sources, caches, test artifacts and installation. This is a free-space difference, not an exclusive Btrfs per-directory measurement. Aggregate peak RAM was not instrumented; the live monitor showed comfortable available-memory headroom during sampled build/check stages, and no resource-exhaustion failure occurred in the accepted logs.
+
+== Focused checks actually run
+
+* Five color-policy tests passed: valid/invalid hex including Unicode rejection; exact approved truecolor; disabled/NO_COLOR/unsupported-color fallback; readable 256-color mapping; contrast correction for poor custom ink.
+* One integration test rendered the real composer and submitted-message widgets with Czech multiline text, verified the requested foreground/background on a Czech glyph, preserved the text and exported the two widget buffers.
+* The existing `light_terminal_palette_renders_light_composer_snapshot` test passed with the custom feature disabled. Other tests were filtered out, as Falken requested; the full workspace suite was not run.
+* Baseline and installed launcher version/help checks passed in isolated Codex state directories. `--blue-off --version` and `--blue-info` passed. No model/API request was sent by these smoke tests.
+* Strict patch applicability passed against a fresh pinned checkout. An intentionally renamed rendering function was rejected. An unexpected external lockfile checksum edit was also rejected.
+* The final executable contains the custom feature marker and has a different hash from the baseline. A repeated package invocation reused the matching existing release successfully.
+
+See link:../reports/validation.json[validation], link:../reports/launcher-smoke.json[launcher smoke checks], link:../reports/reapply-negative-test.json[patch rejection] and link:../reports/lock-negative-test.json[lockfile rejection]. The source-level patch review and native widget checks are evidence for this narrow change; they are not full regression qualification of Codex.
+
+== Shared-cache lesson
+
+The first patched command returned success quickly but produced exactly the baseline binary, with no custom feature marker. The patched worktree's edited files predated the completed baseline artifacts in the shared Cargo target directory. Switching worktrees had therefore not invalidated the affected crate as expected.
+
+The build helper now tracks source/variant/diff identity, refreshes the affected Rust-source timestamps on a switch, and checks for the expected feature marker before accepting an artifact. This preserves dependency-cache reuse while forcing the UI to compile. The rejected attempt is recorded explicitly; it was never installed as codex-blue. A successful compiler exit alone was insufficient evidence that the intended variant had been built.
+
+== Reapply and maintain
+
+[source,shell]
+----
+tools/bootstrap --version VERSION
+tools/rebuild-blue --version VERSION --check-only
+tools/rebuild-blue --version VERSION --package
+----
+
+Use an explicit official release version. The scripts verify the official remote, resolve the release commit, use its declared toolchain, check patch context strictly, normalize only audited local release labels, build with locked dependencies and run the focused tests before packaging. An incompatible context, unexpected lock change, missing feature marker or failed check stops the process. Matching installed resources are reused; another version can fetch its official npm helper package. Old validated releases remain intact. The initial patch applicability and pipeline components were exercised here; a different upstream release has not yet been built or validated.
+
+`tools/status --follow` shows stages and recent activity independently of the build. Ctrl+C closes only that viewer. It now says READY once packaging is complete rather than suggesting the compiler is still busy. Its time range is a planning allowance, not a compiler-generated ETA.
+
+The `.build` directory is a regenerable nested Btrfs subvolume and is ignored by Git. Its contents are not part of parent-subvolume snapshots. The inspected Snapper policy covers `/`, while home is separately mounted; no policy was changed. Keep the small patch, scripts, notes and manifests backed up. Keep the build cache if quick reapplication matters; inspect its size directly before any later cleanup.

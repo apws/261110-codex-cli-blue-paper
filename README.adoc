@@ -1,13 +1,15 @@
 = codex-blue: local CLI user-message colors
 :title: {docname}
 
-Implementation in progress. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The installed `codex` remains intact.
+Built, checked and installed as `/home/falken/.local/bin/codex-blue`. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The ordinary `codex` remains available. Human terminal acceptance is pending; the approved mockup, native widget checks and launcher smoke checks pass.
 
 Target colors: light-blue user-message paper `#A4CDFB` and dark ink `#101820`, adjustable in an explicit `codex-blue` wrapper. Keep both editable and submitted user messages readable; preserve a stock fallback.
 
 The ignored `.build` directory is a nested Btrfs subvolume for regenerable toolchain, sources and artifacts. The inspected Snapper configuration covers `/`; home is a separate subvolume. No Snapper policy was changed.
 
-Falken requests focused rendering/color, startup and visual checks rather than a full Codex workspace test run. Final packaging, measured timings, update/reapply instructions and test results will be documented here when ready.
+Read link:docs/261110-1620-BUILD-Codex-blue-paper-local.adoc[the handover, measured timings and verification], or view link:output/native-composer-preview.png[the real composer test-buffer preview]. Seven selected rendering/color checks passed; the full Codex workspace suite was not run, as agreed.
+
+Run `codex-blue` to start, `codex-blue --blue-info` for identity/profile, or `codex-blue --blue-off` for stock rendering in the custom executable. Colors are editable in `~/.config/codex-blue/colors.json` without recompilation. The simple rollback is ordinary `codex`.
 
 == Live progress
 

@@ -1,0 +1,12 @@
+{
+  "path": "/home/falken/.local/share/codex-blue/releases/0.166.0-8376a70f3b52",
+  "version": "0.166.0",
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "patch_sha256": "8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275",
+  "binary_sha256": "ef3d45905efc70eb5a95c34dbc2a3a7620345ce73afd20a9893a4ea56eba9333",
+  "target": "x86_64-unknown-linux-gnu",
+  "official_helpers_target": "x86_64-unknown-linux-musl",
+  "validation_sha256": "c07212e7abbe67e07412db07dd271be348d8da7d77fe6f644ee50bd25d059a10",
+  "profile": "dev-small",
+  "note": "Local color-only source patch; bundled helpers/resources from the matching official package."
+}

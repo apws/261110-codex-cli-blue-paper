@@ -1,10 +1,11 @@
 {
-  "tools/bootstrap": "f01e0fcef15c3be4a5c773fba208158efdeba55512dab2ce9e9f47860ebdf40b",
-  "tools/build-codex": "194130081bc09af15af1230a2433bf083d064e69b58e40dcbf33d751b58189ae",
-  "tools/locked_release.py": "5b99edd731ef740dc025813a31cd103bb006b8baca62e8738be3d48b28c56870",
-  "tools/rebuild-blue": "c776fd43fd7a2def89a11f1759cfc0bd34710e7601c03e208e8daee7e728dde1",
-  "tools/package-blue": "67bdd903bf03b8f2982a1a95af75bab43b1d2092e9641c701a972551eb319064",
+  "tools/build-codex": "3beeb74f3b09c039dfe3bb11ec5b1bca889d45242f1865f4bd95ede2fbc9db1d",
+  "tools/status": "c9b37c193261ec330d305b6050ddc913b35d142afbd7c3efec165e789965054b",
+  "tools/rebuild-blue": "d4a066197858b9a18ccd8439d3ae1cf6248d0eee97dc45382041a0bbb62c8536",
   "tools/launcher.py": "f8b202591d299c6b0f85e7ffc996e0e7cb410d8e20d6c6157257f0c3ec70461e",
-  "tools/status": "c2ecb4e4f3f8d12633220dfc3d23c619d8ab7bbe1f3a1fccd65df8d77827e9c5",
-  "patches/user-paper.patch": "8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275"
+  "tools/package-blue": "9ddaada6cd2f35c5a8f2f810db1e01b8b095ab3a63f35a03e268cf82a0864cf4",
+  "tools/locked_release.py": "5b99edd731ef740dc025813a31cd103bb006b8baca62e8738be3d48b28c56870",
+  "tools/bootstrap": "963d23028f7beffb5382e3ef99561bd29d462b1d16f21673a19a006d3acef777",
+  "tools/finish-blue": "9171e815276c3339609fcbda83e03ceab83665d4597e13e9cab9c88e5299bf66",
+  "tools/render-widget-preview.py": "1f04f5bb4f4fad0c26b6e0647bc51631fa3b6b7151dc640e7c8f4bd02cec4fdc"
 }

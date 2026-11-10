@@ -1,0 +1,39 @@
+{
+  "status": "pass",
+  "isolated_home": true,
+  "checks": [
+    {
+      "arguments": [
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout_first_line": "codex-cli 0.166.0",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_first_line": "Codex CLI",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "--blue-off",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout_first_line": "codex-cli 0.166.0",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "--blue-info"
+      ],
+      "exit_code": 0,
+      "stdout_first_line": "{",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "source_tag": "rust-v0.166.0",
+  "isolated_toolchain": "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/rustup/toolchains/1.95.0-x86_64-unknown-linux-gnu",
+  "rustc": "rustc 1.95.0 (59807616e 2026-04-14)",
+  "cargo": "cargo 1.95.0 (f2d3ce0bd 2026-03-21)",
+  "installer_sha256": "d890e2fef6fa991b19cde2e608199bc1dca4e37f41f884edf8849ff693048de6",
+  "components_present": {
+    "rustfmt": true,
+    "clippy": true
+  },
+  "rust_src_present": true,
+  "build_subvolume_inode": 256,
+  "shell_path_modified": false
+}

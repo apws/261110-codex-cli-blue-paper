@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+"""Run focused checks for the initial pinned build, then package its exact binary."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE = ROOT / '.build/patched'
+
+
+def main():
+    for selected in ('blue_paper', 'light_terminal_palette_renders_light_composer_snapshot'):
+        subprocess.run([str(ROOT / 'tools/build-codex'), 'blue', '--test-filter', selected], check=True)
+    binary = ROOT / '.build/artifacts/blue/codex'
+    with binary.open('rb') as stream:
+        binary_sha = hashlib.file_digest(stream, 'sha256').hexdigest()
+    builds = [json.loads(p.read_text()) for p in (ROOT / 'reports').glob('*-blue-build.json')]
+    matching = [r for r in builds if r.get('binary_sha256') == binary_sha and r.get('blue_feature_marker_present') is True and r['exit_code'] == 0]
+    assert matching, 'No accepted build record matches this binary.'
+    record = matching[-1]
+    tests = [json.loads(p.read_text()) for p in (ROOT / 'reports').glob('*-blue-test.json')]
+    assert all(any(t['exit_code'] == 0 and t.get('tests_passed', 0) > 0 and selected in t['command'] for t in tests)
+               for selected in ('blue_paper', 'light_terminal_palette_renders_light_composer_snapshot'))
+    validation = dict(version='0.166.0', source_commit=record['source_commit'], source=str(SOURCE),
+                      patch_sha256=hashlib.sha256((ROOT / 'patches/user-paper.patch').read_bytes()).hexdigest(),
+                      binary_sha256=binary_sha, build_and_focused_tests='pass',
+                      tests=['blue_paper', 'light_terminal_palette_renders_light_composer_snapshot'],
+                      native_widget_buffers_exported=True)
+    for name in ('composer', 'history'):
+        assert (ROOT / f'output/native-buffers/{name}.json').is_file()
+    path = ROOT / 'reports/validation.json'
+    path.write_text(json.dumps(validation, indent=2) + '\n')
+    subprocess.run([str(ROOT / 'tools/package-blue'), '--version', '0.166.0', '--source', str(SOURCE),
+                    '--binary', str(binary), '--validation', str(path)], check=True)
+
+
+if __name__ == '__main__':
+    main()

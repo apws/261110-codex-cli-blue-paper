@@ -1,0 +1,18 @@
+{
+  "status": "pass",
+  "isolated_home": true,
+  "checks": [
+    {
+      "flag": "--version",
+      "exit_code": 0,
+      "stdout_first_line": "codex-cli 0.166.0",
+      "stderr": ""
+    },
+    {
+      "flag": "--help",
+      "exit_code": 0,
+      "stdout_first_line": "Codex CLI",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "source": "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/patched",
+  "variant": "blue",
+  "command": [
+    "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/cargo/bin/cargo",
+    "build",
+    "--locked",
+    "-p",
+    "codex-cli",
+    "--bin",
+    "codex",
+    "--profile",
+    "dev-small",
+    "--jobs",
+    "2",
+    "--timings"
+  ],
+  "seconds": 13.003,
+  "exit_code": 0,
+  "cargo_lock_sha256": "360ea1e0ec391255ffc153a73548be524aa5d50c3476f247631cec184c21d4cb",
+  "release_lock_metadata": {
+    "original_sha256": "22bd51f50864ce40f6686f3350c0547fdd50a8213240f54435ed394f68bf08e6",
+    "normalized_sha256": "360ea1e0ec391255ffc153a73548be524aa5d50c3476f247631cec184c21d4cb",
+    "workspace_version": "0.166.0",
+    "local_release_labels_normalized": 170,
+    "external_packages_and_all_dependency_edges_unchanged": true
+  },
+  "disk_available_before_gib": 477.03,
+  "disk_available_after_gib": 476.8,
+  "binary_sha256": "f37694c452d793b0641820931a8b5d363c8584a0eff95baa73de05cb4e08d723",
+  "artifact_accepted": false,
+  "artifact_rejection_reason": "Shared target cache reused baseline executable: identical SHA-256 and missing blue feature marker. Not installed."
+}

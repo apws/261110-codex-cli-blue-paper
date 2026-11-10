@@ -33,6 +33,7 @@ def main():
     tag = 'rust-v' + args.version
     if not source.exists():
         run(['git', 'clone', '--depth', '1', '--branch', tag, 'https://github.com/openai/codex.git', source])
+    assert subprocess.check_output(['git', 'remote', 'get-url', 'origin'], cwd=source, text=True).strip() == 'https://github.com/openai/codex.git'
     if not subprocess.check_output(['git', 'tag', '-l', tag], cwd=source, text=True).strip():
         run(['git', 'fetch', '--depth', '1', 'origin', f'refs/tags/{tag}:refs/tags/{tag}'], cwd=source)
     toolchain_text = subprocess.check_output(['git', 'show', tag + ':codex-rs/rust-toolchain.toml'], cwd=source, text=True)

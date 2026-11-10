@@ -1,0 +1,13 @@
+{
+  "version": "0.166.0",
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "source": "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/patched",
+  "patch_sha256": "8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275",
+  "binary_sha256": "ef3d45905efc70eb5a95c34dbc2a3a7620345ce73afd20a9893a4ea56eba9333",
+  "build_and_focused_tests": "pass",
+  "tests": [
+    "blue_paper",
+    "light_terminal_palette_renders_light_composer_snapshot"
+  ],
+  "native_widget_buffers_exported": true
+}

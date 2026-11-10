@@ -4,6 +4,7 @@ import argparse
 import datetime
 import hashlib
 import json
+import mmap
 import os
 import re
 from pathlib import Path
@@ -38,6 +39,20 @@ def main():
         changed = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD'], cwd=source, text=True).splitlines()
         assert set(changed) <= {'codex-rs/Cargo.lock'}, changed
     lock_adjustment = normalize_lock(source)
+    active_path = BUILD / 'target/codex-blue-active-source.json'
+    active = dict(source=str(source), variant=args.variant,
+                  source_diff_sha256=hashlib.sha256(subprocess.check_output(['git', 'diff', 'HEAD'], cwd=source)).hexdigest())
+    previous = json.loads(active_path.read_text()) if active_path.exists() else None
+    if previous != active:
+        # Cargo shares workspace-relative fingerprints between worktrees. A patched file
+        # older than a baseline artifact can otherwise be falsely considered fresh.
+        changed = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD'], cwd=source, text=True).splitlines()
+        rust_files = [source / name for name in changed if name.endswith('.rs')]
+        rust_files += [source / 'codex-rs/tui/src/style.rs', source / 'codex-rs/cli/src/main.rs']
+        for path in set(rust_files):
+            os.utime(path, None)
+        active_path.parent.mkdir(parents=True, exist_ok=True)
+        active_path.write_text(json.dumps(active, indent=2) + '\n')
     free = shutil.disk_usage(BUILD).free
     assert free > 25 * 2**30, 'Less than 25 GiB free; review build space before continuing.'
     env = os.environ.copy()
@@ -78,6 +93,13 @@ def main():
             record['error'] = 'No matching tests executed.'
     binary = BUILD / 'target/dev-small/codex'
     if result.returncode == 0 and not args.fetch_only and not args.test_filter:
+        with binary.open('rb') as stream, mmap.mmap(stream.fileno(), 0, access=mmap.ACCESS_READ) as data:
+            marker_present = data.find(b'CODEX_BLUE_PAPER_BG') >= 0
+        record['blue_feature_marker_present'] = marker_present
+        if marker_present != (args.variant == 'blue'):
+            record['exit_code'] = 1
+            record['error'] = 'Build cache produced the wrong UI variant; artifact rejected.'
+    if record['exit_code'] == 0 and not args.fetch_only and not args.test_filter:
         output = BUILD / 'artifacts' / args.variant
         output.mkdir(parents=True, exist_ok=True)
         shutil.copy2(binary, output / 'codex')
