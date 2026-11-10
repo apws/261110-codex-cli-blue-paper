@@ -1,7 +1,7 @@
 = codex-blue: local CLI user-message colors
 :title: {docname}
 
-Built, checked and installed as `/home/falken/.local/bin/codex-blue`. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The ordinary `codex` remains available. Human terminal acceptance is pending; the approved mockup, native widget checks and launcher smoke checks pass.
+Built, checked and installed as `/home/falken/.local/bin/codex-blue`. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The ordinary `codex` remains available. Falken confirmed the actual terminal appearance and resumed this same conversation in codex-blue on 2026-11-10 at 16:31; all six stages are complete. See link:output/terminal-accepted-261110-1631.png[the acceptance screenshot].
 
 Target colors: light-blue user-message paper `#A4CDFB` and dark ink `#101820`, adjustable in an explicit `codex-blue` wrapper. Keep both editable and submitted user messages readable; preserve a stock fallback.
 

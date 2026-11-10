@@ -9,6 +9,6 @@
 * [x] Apply and review user-surface color patch; strict reapply and rejection checks pass.
 * [x] Build patched CLI and run focused checks: 6 custom tests + 1 stock regression passed.
 * [x] Package explicit launcher and strict version/reapply tooling; launcher smoke checks passed.
-* [ ] Finish handover and inspect the result in Falken's terminal.
+* [x] Finish handover and inspect the result in Falken's terminal; accepted with screenshot after resuming this conversation at 2026-11-10 16:31.
 
 Use `tools/status --follow` for live compiler output. Rust does not provide a reliable overall percentage; dependency compilation and final linking vary substantially in duration.

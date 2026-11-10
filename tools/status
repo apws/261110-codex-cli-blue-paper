@@ -25,6 +25,11 @@ def stamp(log):
 
 def show():
     now = datetime.datetime.now(datetime.timezone.utc)
+    review_path = ROOT / 'reports/terminal-review.json'
+    review = json.loads(review_path.read_text()) if review_path.exists() else None
+    complete = review is not None and review.get('status') == 'pass'
+    if complete:
+        now = datetime.datetime.fromisoformat(review['accepted_utc'])
     logs = sorted((ROOT / 'reports').glob('20*.log'))
     width = max(60, shutil.get_terminal_size((100, 35)).columns)
     def line(value=''):
@@ -46,14 +51,16 @@ def show():
         if (ROOT / 'reports/installed.json').exists():
             stage = 6
     failed = result is not None and result['exit_code'] != 0
-    line(f'codex-blue / stage {stage} of 6' + (' / STOPPED: review failure' if failed else ''))
+    line('codex-blue / COMPLETE / 6 of 6 stages' if complete else
+         f'codex-blue / stage {stage} of 6' + (' / STOPPED: review failure' if failed else ''))
     if stage == 6:
-        line('READY: codex-blue is installed; build and focused checks have finished.')
+        line('Accepted in the actual terminal; this conversation resumed successfully.' if complete else
+             'READY: codex-blue is installed; build and focused checks have finished.')
     stages = ['Source + Rust + approved colour preview', 'Unmodified CLI baseline build',
               'Patched CLI build', 'Focused colour/rendering checks',
               'Package + install codex-blue', 'Review in your terminal + handover']
     for number, label in enumerate(stages, 1):
-        state = 'done' if number < stage else 'FAIL' if failed and number == stage else 'NOW ' if number == stage else 'next'
+        state = 'done' if complete or number < stage else 'FAIL' if failed and number == stage else 'NOW ' if number == stage else 'next'
         if number == 3 and stage < 3 and (ROOT / 'patches/user-paper.patch').exists():
             label += ' (patch draft ready)'
         line(f'  [{state}] {number}. {label}')

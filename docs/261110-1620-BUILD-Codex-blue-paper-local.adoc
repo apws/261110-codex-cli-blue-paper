@@ -29,7 +29,9 @@ Colors live in `/home/falken/.config/codex-blue/colors.json`:
 
 Edit that profile and restart codex-blue to change the colors; no recompilation is required. The local wrapper also accepts the patch's `CODEX_BLUE_PAPER`, `CODEX_BLUE_PAPER_BG` and `CODEX_BLUE_PAPER_FG` environment overrides. These are custom additions, not upstream Codex config keys. Invalid hex or disabled/unsupported color output falls back to upstream rendering. Ink that has insufficient contrast against the selected paper is adjusted by the existing upstream contrast helper. `NO_COLOR` disables the custom surface.
 
-Falken approved the original light-blue/dark-ink PNG. The link:../output/native-composer-preview.png[native composer preview] was then rendered from the actual Codex widget test buffer. It is not a capture of Falken's terminal. The installed launcher is ready; a new-terminal check was requested, and human terminal acceptance remains pending when this note is written.
+Falken approved the original light-blue/dark-ink PNG. The link:../output/native-composer-preview.png[native composer preview] was then rendered from the actual Codex widget test buffer; that image is not a terminal capture. *Final acceptance, 2026-11-10 16:31:* Falken launched codex-blue, resumed this same conversation and confirmed that it looks good. His link:../output/terminal-accepted-261110-1631.png[actual terminal screenshot] shows the approved blue/dark colors in both submitted messages and the typing area. Human acceptance and handover are complete.
+
+The installed launcher inherits the ordinary `CODEX_HOME` environment unchanged, normally `~/.codex`; it shares saved conversations, authentication, configuration and normal session state. Only the executable/resources, build workspace and color profile are separate. The temporary Codex homes used for smoke tests do not affect normal launches. Successful resumption of this same conversation provides direct confirmation of shared history in Falken's setup.
 
 == Build identity and scope
 

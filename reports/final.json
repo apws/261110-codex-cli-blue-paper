@@ -1,6 +1,6 @@
 {
-  "status": "installed-and-focused-checks-pass",
-  "human_terminal_acceptance": "pending",
+  "status": "complete",
+  "human_terminal_acceptance": "pass",
   "version": "0.166.0",
   "binary_sha256": "ef3d45905efc70eb5a95c34dbc2a3a7620345ce73afd20a9893a4ea56eba9333",
   "patch_sha256": "8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275",
@@ -12,5 +12,6 @@
   "first_focused_test_build_and_run_seconds": 509.939,
   "stock_regression_seconds": 1.492,
   "normal_codex_version_rechecked": "0.166.0",
-  "full_workspace_suite_run": false
+  "full_workspace_suite_run": false,
+  "shared_conversation_resumed": true
 }
