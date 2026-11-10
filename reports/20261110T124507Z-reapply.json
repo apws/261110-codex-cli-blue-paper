@@ -1,0 +1,8 @@
+{
+  "version": "0.166.0",
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "source": "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/trees/0.166.0-_pos1exh",
+  "patch_sha256": "8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275",
+  "patch_applicability": "pass",
+  "build_and_focused_tests": "not-run"
+}

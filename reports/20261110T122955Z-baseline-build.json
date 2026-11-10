@@ -1,0 +1,23 @@
+{
+  "source_commit": "6ff1e1ca3b30fc8b914720681fcf5fe62e95f856",
+  "variant": "baseline",
+  "command": [
+    "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/cargo/bin/cargo",
+    "build",
+    "--locked",
+    "-p",
+    "codex-cli",
+    "--bin",
+    "codex",
+    "--profile",
+    "dev-small",
+    "--jobs",
+    "2",
+    "--timings"
+  ],
+  "seconds": 0.276,
+  "exit_code": -6,
+  "cargo_lock_sha256": "22bd51f50864ce40f6686f3350c0547fdd50a8213240f54435ed394f68bf08e6",
+  "disk_available_before_gib": 486.77,
+  "disk_available_after_gib": 486.77
+}

@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Show stages, elapsed time, rough planning window and current compiler activity."""
+import argparse
+import datetime
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import time
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def duration(seconds):
+    minutes = max(0, round(seconds / 60))
+    hours, minutes = divmod(minutes, 60)
+    return f'{hours}h {minutes:02d}m' if hours else f'{minutes}m'
+
+
+def stamp(log):
+    return datetime.datetime.strptime(log.name.split('-')[0], '%Y%m%dT%H%M%SZ').replace(tzinfo=datetime.timezone.utc)
+
+
+def show():
+    now = datetime.datetime.now(datetime.timezone.utc)
+    logs = sorted((ROOT / 'reports').glob('20*.log'))
+    width = max(60, shutil.get_terminal_size((100, 35)).columns)
+    def line(value=''):
+        print(value if len(value) < width else value[:width - 2] + '…')
+    stage = 1
+    result = None
+    content = []
+    if logs:
+        log = logs[-1]
+        result_path = log.with_suffix('.json')
+        if result_path.exists():
+            result = json.loads(result_path.read_text())
+        stage = 4 if '-test.' in log.name else 3 if '-blue-' in log.name else 2
+        content = log.read_text(errors='replace').splitlines()
+        if result and result['exit_code'] == 0 and stage in (2, 3):
+            stage += 1
+        if (ROOT / 'reports/validation.json').exists():
+            stage = 5
+        if (ROOT / 'reports/installed.json').exists():
+            stage = 6
+    failed = result is not None and result['exit_code'] != 0
+    line(f'codex-blue / stage {stage} of 6' + (' / STOPPED: review failure' if failed else ''))
+    stages = ['Source + Rust + approved colour preview', 'Unmodified CLI baseline build',
+              'Patched CLI build', 'Focused colour/rendering checks',
+              'Package + install codex-blue', 'Review in your terminal + handover']
+    for number, label in enumerate(stages, 1):
+        state = 'done' if number < stage else 'FAIL' if failed and number == stage else 'NOW ' if number == stage else 'next'
+        if number == 3 and stage < 3 and (ROOT / 'patches/user-paper.patch').exists():
+            label += ' (patch draft ready)'
+        line(f'  [{state}] {number}. {label}')
+    if logs:
+        overall = (now - stamp(logs[0])).total_seconds()
+        elapsed = (now - stamp(log)).total_seconds()
+        line()
+        line(f'Workflow elapsed: {duration(overall)} | Latest build/check: {duration(elapsed)}')
+        if stage < 6 and not failed:
+            low, high = max(0, 3600 - overall), max(0, 10800 - overall)
+            if high:
+                line(f'Rough remaining planning window: {duration(low)} - {duration(high)}')
+                line('  Based on the original 1-3h allowance, not a measured compiler ETA.')
+            else:
+                line('Initial time allowance exceeded; a reliable ETA is not available yet.')
+        compiled = sum(bool(re.search(r'\bCompiling\s', value)) for value in content)
+        line(f'Compiler steps reported in this log: {compiled} (not a time percentage)')
+        if result:
+            line(f'Latest result: exit {result["exit_code"]}, duration {duration(result["seconds"])}')
+        line('Latest compiler activity:')
+        for value in content[-6:]:
+            # Keep the crate/version visible instead of wrapping long absolute source paths.
+            value = re.sub(r'(Compiling \S+ v\S+) \(/home/.*', r'\1', value)
+            line('  ' + value.strip())
+        line(f'Log idle: {round(time.time() - log.stat().st_mtime)}s (long crates/linking can be quiet)')
+        line('Log: reports/' + log.name)
+    mem = dict((k, v.strip()) for k, v in (value.split(':', 1) for value in Path('/proc/meminfo').read_text().splitlines()))
+    line(f'Available RAM: {int(mem["MemAvailable"].split()[0]) / 2**20:.1f} GiB | Disk: {shutil.disk_usage(ROOT).free / 2**30:.1f} GiB')
+    line('Ctrl+C stops this viewer only; the build continues.')
+
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--follow', action='store_true', help='Refresh every three seconds; Ctrl+C exits.')
+args = parser.parse_args()
+try:
+    if args.follow:
+        while True:
+            print('\033[2J\033[H', end='', flush=True)
+            # Reload the formatter each refresh, so later monitor edits appear automatically.
+            subprocess.run([sys.executable, str(Path(__file__).resolve())], check=False)
+            time.sleep(3)
+    else:
+        show()
+except KeyboardInterrupt:
+    pass

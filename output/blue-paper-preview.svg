@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="790" viewBox="0 0 1280 790">
+  <rect width="1280" height="790" fill="#121212"/>
+  <g font-family="DejaVu Sans Mono, monospace" font-size="22">
+    <text x="48" y="60" fill="#e8e8e8">codex-blue · proposed message colours</text>
+    <text x="48" y="104" fill="#aaaaaa" font-size="17">Submitted user message</text>
+    <rect x="40" y="124" width="1200" height="148" fill="#A4CDFB"/>
+    <g fill="#101820">
+      <text x="62" y="168">› pls Ari, check the FirstZ80 PCB and its 3D models, tnx :-)</text>
+      <text x="88" y="207">  Příliš žluťoučký kůň úpěl ďábelské ódy.</text>
+      <text x="88" y="246">  ./firstz80/layouts/03-freerouting/FirstZ80.kicad_pcb</text>
+    </g>
+    <text x="48" y="319" fill="#aaaaaa" font-size="17">Assistant reply</text>
+    <g fill="#e0e0e0">
+      <text x="62" y="364">The models are present. All three routed boards pass DRC.</text>
+      <text x="62" y="402">Routing and component placement remain unchanged.</text>
+    </g>
+    <text x="48" y="470" fill="#aaaaaa" font-size="17">Typing area</text>
+    <rect x="40" y="490" width="1200" height="166" fill="#A4CDFB"/>
+    <g fill="#101820">
+      <text x="62" y="537">› okay Ari, this is how my next message would look...</text>
+      <text x="88" y="576">  Light blue paper, dark ink. Česky také bez problémů.</text>
+      <rect x="88" y="600" width="13" height="26"/>
+    </g>
+    <text x="48" y="696" fill="#aaaaaa" font-size="17">Paper #A4CDFB     Ink #101820     Dark reply surface #121212</text>
+    <text x="48" y="746" fill="#aaaaaa" font-size="16">Colour mockup only; not a screenshot of the rebuilt CLI.</text>
+  </g>
+</svg>

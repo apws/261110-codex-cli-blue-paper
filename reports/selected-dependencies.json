@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/.build/rustup/toolchains/1.95.0-x86_64-unknown-linux-gnu/bin/cargo",
+    "tree",
+    "--locked",
+    "--offline",
+    "-p",
+    "codex-cli",
+    "--edges",
+    "normal,build",
+    "--prefix",
+    "none",
+    "--format",
+    "{p}"
+  ],
+  "selected_package": "codex-cli",
+  "edges": "normal,build",
+  "tree_lines": 5158,
+  "v8_or_code_mode_runtime_in_selected_graph": []
+}

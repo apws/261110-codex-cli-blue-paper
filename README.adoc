@@ -1,0 +1,22 @@
+= codex-blue: local CLI user-message colors
+:title: {docname}
+
+Implementation in progress. Official Codex CLI 0.166.0, source commit `6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`, isolated Rust 1.95.0. The installed `codex` remains intact.
+
+Target colors: light-blue user-message paper `#A4CDFB` and dark ink `#101820`, adjustable in an explicit `codex-blue` wrapper. Keep both editable and submitted user messages readable; preserve a stock fallback.
+
+The ignored `.build` directory is a nested Btrfs subvolume for regenerable toolchain, sources and artifacts. The inspected Snapper configuration covers `/`; home is a separate subvolume. No Snapper policy was changed.
+
+Falken requests focused rendering/color, startup and visual checks rather than a full Codex workspace test run. Final packaging, measured timings, update/reapply instructions and test results will be documented here when ready.
+
+== Live progress
+
+Run `tools/status --follow` in another terminal. Ctrl+C stops the viewer only. It shows the workflow stages, elapsed time, a rough remaining planning window, recent compiler activity and memory/disk headroom. After the initial viewer restart, its formatter reloads automatically. The time window is a planning estimate, not a compiler-generated percentage or ETA.
+
+The original 718-second dependency-fetch attempt exposed stale internal package versions in the release lockfile. Read link:docs/261110-1352-NOTE-release-lockfile-normalization.adoc[the audited metadata adjustment]. The retried baseline retains external dependency pins and `--locked`. Read link:docs/261110-1338-NOTE-what-the-Codex-build-downloads.adoc[why Chromium-related repositories were downloaded even though the selected CLI target does not compile V8].
+
+== Reapply tooling
+
+`tools/bootstrap --version 0.166.0` provisions the official source and source-declared Rust toolchain into `.build`. `tools/rebuild-blue --version 0.166.0 --check-only` checks strict patch applicability in a clean worktree. The full `tools/rebuild-blue --version VERSION --package` path builds, runs focused tests and packages a checked release. It stops on incompatible patch context or failed checks. Existing installed releases remain intact until a validated replacement is selected.
+
+Raw local compiler logs are retained under `reports/` and ignored by Git; compact result manifests and explanatory notes are tracked. No credentials or conversation history are copied into these artifacts.

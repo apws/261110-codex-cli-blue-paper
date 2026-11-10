@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""Build the pinned baseline or patched CLI in the isolated local toolchain."""
+import argparse
+import datetime
+import hashlib
+import json
+import os
+import re
+from pathlib import Path
+import shutil
+import subprocess
+import time
+from locked_release import normalize_lock
+
+ROOT = Path(__file__).resolve().parents[1]
+BUILD = ROOT / '.build'
+PIN = '6ff1e1ca3b30fc8b914720681fcf5fe62e95f856'
+
+
+def sha(path):
+    return hashlib.file_digest(path.open('rb'), 'sha256').hexdigest()
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('variant', choices=['baseline', 'blue'])
+    p.add_argument('--jobs', type=int, default=2)
+    p.add_argument('--fetch-only', action='store_true')
+    p.add_argument('--test-filter', help='Run only matching codex-tui library tests.')
+    p.add_argument('--source', type=Path, help='A version-pinned worktree within .build.')
+    p.add_argument('--expected-commit', default=PIN)
+    args = p.parse_args()
+    assert 1 <= args.jobs <= 4
+    source = (args.source or BUILD / ('upstream' if args.variant == 'baseline' else 'patched')).resolve()
+    assert source.is_relative_to(BUILD.resolve())
+    assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=source, text=True).strip() == args.expected_commit
+    if args.variant == 'baseline':
+        changed = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD'], cwd=source, text=True).splitlines()
+        assert set(changed) <= {'codex-rs/Cargo.lock'}, changed
+    lock_adjustment = normalize_lock(source)
+    free = shutil.disk_usage(BUILD).free
+    assert free > 25 * 2**30, 'Less than 25 GiB free; review build space before continuing.'
+    env = os.environ.copy()
+    env.update(RUSTUP_HOME=str(BUILD / 'rustup'), CARGO_HOME=str(BUILD / 'cargo'),
+               CARGO_TARGET_DIR=str(BUILD / 'target'), CARGO_BUILD_JOBS=str(args.jobs))
+    env['PATH'] = str(BUILD / 'cargo/bin') + os.pathsep + env['PATH']
+    cargo = str(BUILD / 'cargo/bin/cargo')
+    command = [cargo, 'fetch', '--locked'] if args.fetch_only else [
+        cargo, 'build', '--locked', '-p', 'codex-cli', '--bin', 'codex',
+        '--profile', 'dev-small', '--jobs', str(args.jobs), '--timings']
+    if args.test_filter:
+        command = [cargo, 'test', '--locked', '-p', 'codex-tui', '--lib',
+                   '--profile', 'dev-small', '--jobs', str(args.jobs), args.test_filter, '--', '--nocapture']
+        env['CODEX_BLUE_PREVIEW_DIR'] = str(ROOT / 'output/native-buffers')
+    # Only our explicit wrapper enables the feature; ordinary builds/tests stay upstream-default.
+    for name in ('CODEX_BLUE_PAPER', 'CODEX_BLUE_PAPER_BG', 'CODEX_BLUE_PAPER_FG'):
+        env.pop(name, None)
+    reports = ROOT / 'reports'
+    reports.mkdir(exist_ok=True)
+    stamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    name = f'{stamp}-{args.variant}' + ('-test' if args.test_filter else '-fetch' if args.fetch_only else '-build')
+    started = time.monotonic()
+    print(f'{name}: running; full output in reports/{name}.log', flush=True)
+    with (reports / f'{name}.log').open('w') as log:
+        result = subprocess.run(command, cwd=source / 'codex-rs', env=env,
+                                stdout=log, stderr=subprocess.STDOUT)
+    record = dict(source_commit=args.expected_commit, source=str(source), variant=args.variant, command=command,
+                  seconds=round(time.monotonic() - started, 3), exit_code=result.returncode,
+                  cargo_lock_sha256=sha(source / 'codex-rs/Cargo.lock'),
+                  release_lock_metadata=lock_adjustment,
+                  disk_available_before_gib=round(free / 2**30, 2),
+                  disk_available_after_gib=round(shutil.disk_usage(BUILD).free / 2**30, 2))
+    if args.test_filter and result.returncode == 0:
+        counts = re.findall(r'test result: ok\.\s+(\d+) passed;', (reports / f'{name}.log').read_text())
+        record['tests_passed'] = sum(map(int, counts))
+        if not record['tests_passed']:
+            record['exit_code'] = 1
+            record['error'] = 'No matching tests executed.'
+    binary = BUILD / 'target/dev-small/codex'
+    if result.returncode == 0 and not args.fetch_only and not args.test_filter:
+        output = BUILD / 'artifacts' / args.variant
+        output.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(binary, output / 'codex')
+        record['binary_sha256'] = sha(output / 'codex')
+    (reports / f'{name}.json').write_text(json.dumps(record, indent=2) + '\n')
+    print(json.dumps(record, indent=2), flush=True)
+    if result.returncode:
+        print('\n'.join((reports / f'{name}.log').read_text(errors='replace').splitlines()[-35:]))
+    raise SystemExit(record['exit_code'])
+
+
+if __name__ == '__main__':
+    main()

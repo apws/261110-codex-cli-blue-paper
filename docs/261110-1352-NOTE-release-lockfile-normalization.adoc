@@ -1,0 +1,11 @@
+= Audited release lockfile metadata adjustment
+:title: {docname}
+:revdate: 2026-11-10
+
+The unmodified 0.166.0 baseline stopped under `--locked` before compilation. The source's workspace version is `0.166.0`, but 170 local-package entries in its committed Cargo.lock still carry `0.0.0`. In a disposable worktree, the minimal Cargo resolution changed only those local version labels. A full `generate-lockfile` was also inspected in that disposable tree and rejected because it would select newer external dependencies.
+
+`tools/locked_release.py` now performs only the audited local release-label adjustment. It compares the entire parsed lockfile against a deep copy with just those local versions changed, rejects unexpected existing changes, and records original/normalized hashes. Dependency lists, external package versions, Git source revisions and registry checksums remain unchanged. The official source checkout remains untouched; baseline and patched builds use separate worktrees and the same normalized lock.
+
+For this release the original lock SHA-256 is `22bd51f50864ce40f6686f3350c0547fdd50a8213240f54435ed394f68bf08e6`; normalized SHA-256 is `360ea1e0ec391255ffc153a73548be524aa5d50c3476f247631cec184c21d4cb`. Build commands retain `--locked`. This is an explicit build-metadata delta, separate from the UI patch, and must not be described as literally unchanged lockfile bytes.
+
+The first dependency-fetch attempt took about 718 seconds and ended at the lockfile check. The retried baseline then began real dependency compilation. This setup time is distinct from compilation time and from the later color-only rebuild.

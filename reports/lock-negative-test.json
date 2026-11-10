@@ -1,0 +1,5 @@
+{
+  "status": "pass",
+  "scenario": "Unexpected external checksum delta rejected.",
+  "diagnostic": "Unexpected lockfile delta; review required."
+}

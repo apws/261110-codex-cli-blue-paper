@@ -1,0 +1,10 @@
+{
+  "tools/bootstrap": "f01e0fcef15c3be4a5c773fba208158efdeba55512dab2ce9e9f47860ebdf40b",
+  "tools/build-codex": "194130081bc09af15af1230a2433bf083d064e69b58e40dcbf33d751b58189ae",
+  "tools/locked_release.py": "5b99edd731ef740dc025813a31cd103bb006b8baca62e8738be3d48b28c56870",
+  "tools/rebuild-blue": "c776fd43fd7a2def89a11f1759cfc0bd34710e7601c03e208e8daee7e728dde1",
+  "tools/package-blue": "67bdd903bf03b8f2982a1a95af75bab43b1d2092e9641c701a972551eb319064",
+  "tools/launcher.py": "f8b202591d299c6b0f85e7ffc996e0e7cb410d8e20d6c6157257f0c3ec70461e",
+  "tools/status": "c2ecb4e4f3f8d12633220dfc3d23c619d8ab7bbe1f3a1fccd65df8d77827e9c5",
+  "patches/user-paper.patch": "8376a70f3b52d88de074dc26e6d20b73b6ec66b29b5e10d6559833a251450275"
+}

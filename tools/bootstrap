@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+"""Fetch an official release and its declared Rust toolchain into .build only."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import tomllib
+
+ROOT = Path(__file__).resolve().parents[1]
+BUILD = ROOT / '.build'
+
+
+def run(args, **kwargs):
+    return subprocess.run([str(x) for x in args], check=True, **kwargs)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--version', required=True)
+    args = parser.parse_args()
+    if not re.fullmatch(r'\d+\.\d+\.\d+(?:[-.][a-zA-Z0-9.-]+)?', args.version):
+        parser.error('Specify an explicit upstream release version.')
+    if not BUILD.exists():
+        filesystem = subprocess.check_output(['stat', '-f', '-c', '%T', str(ROOT)], text=True).strip()
+        if filesystem == 'btrfs':
+            run(['btrfs', 'subvolume', 'create', BUILD])
+        else:
+            BUILD.mkdir()
+    source = BUILD / 'upstream'
+    tag = 'rust-v' + args.version
+    if not source.exists():
+        run(['git', 'clone', '--depth', '1', '--branch', tag, 'https://github.com/openai/codex.git', source])
+    if not subprocess.check_output(['git', 'tag', '-l', tag], cwd=source, text=True).strip():
+        run(['git', 'fetch', '--depth', '1', 'origin', f'refs/tags/{tag}:refs/tags/{tag}'], cwd=source)
+    toolchain_text = subprocess.check_output(['git', 'show', tag + ':codex-rs/rust-toolchain.toml'], cwd=source, text=True)
+    config = tomllib.loads(toolchain_text)['toolchain']
+    env = os.environ.copy()
+    env.update(RUSTUP_HOME=str(BUILD / 'rustup'), CARGO_HOME=str(BUILD / 'cargo'))
+    rustup = BUILD / 'cargo/bin/rustup'
+    installer = BUILD / 'rustup-init.sh'
+    if not rustup.exists():
+        run(['curl', '--proto', '=https', '--tlsv1.2', '-fLsS', '-o', installer, 'https://sh.rustup.rs'])
+        run(['sh', installer, '-y', '--no-modify-path', '--profile', 'minimal', '--default-toolchain', config['channel']], env=env)
+    command = [rustup, 'toolchain', 'install', config['channel'], '--profile', 'minimal']
+    for component in config.get('components', []):
+        command += ['--component', component]
+    run(command, env=env)
+    report = dict(version=args.version, declared_toolchain=config, source_tag=tag,
+                  source_commit=subprocess.check_output(['git', 'rev-parse', tag + '^{commit}'], cwd=source, text=True).strip(),
+                  rustup_home=env['RUSTUP_HOME'], cargo_home=env['CARGO_HOME'], shell_path_modified=False)
+    if installer.exists():
+        report['installer_sha256'] = hashlib.sha256(installer.read_bytes()).hexdigest()
+    (ROOT / 'reports').mkdir(exist_ok=True)
+    (ROOT / 'reports/setup.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps(report, indent=2))
+
+
+if __name__ == '__main__':
+    main()

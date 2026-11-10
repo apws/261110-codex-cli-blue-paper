@@ -1,0 +1,7 @@
+{
+  "original_sha256": "22bd51f50864ce40f6686f3350c0547fdd50a8213240f54435ed394f68bf08e6",
+  "normalized_sha256": "360ea1e0ec391255ffc153a73548be524aa5d50c3476f247631cec184c21d4cb",
+  "workspace_version": "0.166.0",
+  "local_release_labels_normalized": 170,
+  "external_packages_and_all_dependency_edges_unchanged": true
+}

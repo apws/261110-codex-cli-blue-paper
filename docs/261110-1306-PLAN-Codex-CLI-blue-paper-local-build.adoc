@@ -1,0 +1,233 @@
+= PLAN: local Codex CLI with blue user-message paper and dark ink
+:title: {docname}
+:revdate: 2026-11-10
+:toc:
+
+== Request and current status
+
+Falken prefers the terminal Codex interface and wants his own messages to stand out: light-blue paper with dark ink, both while typing and after submission. He asks for a local implementation plan, including fetching Rust tools, realistic recompilation effort, safety, rollback and reapplication after Codex updates.
+
+*This is a plan, not an installation.* Only documentation and read-only inspection have been performed for this request. Rust has not been installed, Codex has not been rebuilt, and no launcher, terminal profile or installed executable has been replaced.
+
+The earlier `Settings -> Appearance` advice concerned the desktop app and was inappropriate for this CLI session. The CLI's recorded syntax theme is `github`. Its `/theme` mechanism accepts custom `.tmTheme` files, but the inspected submitted-message and composer fills are computed separately in Rust. A custom syntax theme alone does not implement this request.
+
+== Proposed result
+
+[cols="2,3",options="header"]
+|===
+|Item |Proposed behavior
+|User paper |Default `#A4CDFB`, a light blue; adjustable without another compilation.
+|User ink |Default `#101820`, near black; adjustable without another compilation.
+|Typing and history |Apply the colors to the editable composer and submitted user-message cells. Preserve wrapping, padding, scrolling, editing and attachment layout.
+|Other surfaces |Preserve the existing assistant, tool-output, diff and code syntax styling.
+|Readability |Check links, mentions, prompt markers, placeholder/disabled text, search hits, selection, pasted text and attachment labels on the new surface.
+|Normal launch |Existing `codex` remains the ordinary installed command.
+|Custom launch |Use an explicit `codex-blue` wrapper pointing to a separately built and versioned executable.
+|Disable/revert |Run ordinary `codex`, or disable the custom fill in our wrapper configuration.
+|===
+
+Implement a small local feature with our own wrapper-controlled environment variables, provisionally `CODEX_BLUE_PAPER`, `CODEX_BLUE_PAPER_BG` and `CODEX_BLUE_PAPER_FG`. *These are proposed additions in our patch, not existing upstream Codex settings.* Parse the two colors once per process, handle invalid input predictably, and keep stock rendering available when the feature is disabled. Do not add invented keys to the upstream `config.toml` schema.
+
+The core color change should be tens of lines. Robust handling of styled spans, focused tests, build automation, packaging and update checks will be a larger amount of work. Calling the entire deliverable a two-line tweak would understate it.
+
+== Inspected baseline and source pin
+
+[cols="2,4",options="header"]
+|===
+|Item |Observed value
+|Installed CLI |`codex-cli 0.166.0`, launched through `/usr/bin/codex` and the installed npm package.
+|Installed native target |`x86_64-unknown-linux-musl`, according to its `codex-package.json`.
+|Initial source tag |`openai/codex`, `rust-v0.166.0`.
+|Resolved source commit |`6ff1e1ca3b30fc8b914720681fcf5fe62e95f856`.
+|Pinned Rust toolchain |Source `codex-rs/rust-toolchain.toml` specifies Rust `1.95.0`, with rustfmt, clippy and rust-src components.
+|Core rendering |`codex-rs/tui/src/style.rs`: composer `user_message_style()` and submitted-message `history_prompt_style()`.
+|Consumers |`codex-rs/tui/src/bottom_pane/chat_composer.rs` and `codex-rs/tui/src/history_cell/messages.rs`.
+|Build target |Cargo package `codex-cli`, binary `codex`; it depends on many workspace crates even when only this binary is selected.
+|Build profiles |Upstream has `dev-small` with debug information disabled, and a release profile with thin LTO and debug information. Production-style release linking is additional work, not required for a first visual trial.
+|===
+
+Recheck the installed version at implementation time. If it has changed, explicitly select a matching source tag and inspect the affected functions again. Do not silently build from the moving `main` branch or combine source files from different versions.
+
+== Resources and estimated duration
+
+*Update, 2026-11-10 13:17:* Falken closed the Windows VM and deleted old Snapper snapshots, retaining the last one. Repeated `df`, `statvfs` and Btrfs filesystem-usage checks now report about *487-488 GiB available disk*, and memory reports about *18 GiB available RAM*. Falken also confirmed the new free-space figure in Double Commander. The resource shortage recorded below is therefore a historical pre-cleanup measurement, not the current build blocker. No files were moved or deleted by the assistant. The VM disk can retain its intended purpose; the primary filesystem now has adequate planning headroom.
+
+Read-only checks at that time showed all five Btrfs device-error counters at zero, a read/write mount and no matching recent Btrfs error messages in the accessible kernel journal. No completed scrub statistics were available, and no scrub or repair was started; these checks are not a full integrity certification. Btrfs frees deleted subvolume blocks in the background, making delayed snapshot-space recovery a plausible explanation for the jump. See https://btrfs.readthedocs.io/en/latest/btrfs-subvolume.html[the Btrfs subvolume deletion documentation].
+
+Read-only measurements around 2026-11-10 13:06 Europe/Prague:
+
+* CachyOS Linux, Intel i7-10710U, 12 logical CPUs.
+* About 31.1 GiB physical RAM in total, but only about 2.2 GiB currently available.
+* About 10.7 GiB free on the filesystem containing the home directory.
+* About 95.0 GiB swap configured, with roughly 80.0 GiB free. Swap is not equivalent to available RAM for a responsive build.
+* `/tmp` has about 15.0 GiB free on a memory-backed filesystem; do not use it for a large Rust build to work around low home-directory space.
+* C/C++ compilers, clang, CMake, make, pkg-config, Git and curl are present. `rustup`, `cargo` and `rustc` are absent from PATH.
+
+These are point-in-time measurements, not permanent machine specifications. Recheck all of them before fetching large dependencies or building.
+
+[cols="2,2,4",options="header"]
+|===
+|Stage |Planning allowance |Qualification
+|Source/toolchain/dependency preparation |10-30 minutes |Network, dependency mirrors and native build prerequisites can extend this.
+|First selected-binary build |30-120 minutes |Rough engineering estimate for this laptop after adequate resources are available; not a measured Codex benchmark. A constrained one-job build or difficult native dependency can take longer.
+|Patch, focused tests and visual review |30-60 minutes |Includes checking both message surfaces and their highlighted text.
+|First complete attempt |Reserve 2-4 hours |Includes setup/debugging allowance. Resource contention or missing native artifacts can exceed this; it is not a promised completion time.
+|Later color-only rebuild |Often 5-30 minutes |Same source/toolchain/profile and retained dependency cache; still requires relinking and checks.
+|New upstream version |Potentially another substantial build |Dependency and toolchain changes can invalidate much of the cache. Reapplication is not necessarily instant.
+|===
+
+The conservative initial resource target is *30-50 GiB free disk and 8-12 GiB available RAM*, with one or two Cargo jobs. These are planning headroom targets, not published upstream requirements or measured peak usage. Record actual peak disk/RAM and elapsed time during the first successful build, then replace estimates with evidence.
+
+*Do not start a full build if a fresh check again shows a shortage like the earlier 10.7 GiB disk / 2.2 GiB available-RAM snapshot.* The 13:17 update above clears that earlier shortage. If it recurs, first free resources or select another suitable disk/build machine. Never delete unrelated files automatically. A compiler can still use substantial memory when `--jobs 1` is selected; job limiting is not a hard memory cap.
+
+=== Snapshot recovery, recent changes and the large-directory review
+
+Falken was understandably surprised that deleting many Snapper snapshots appeared to return only about 1 GiB initially, followed later by almost 488 GiB available space. He reported a recent large CachyOS update, including Plasma 6.8, and a recent move of virtual machines to a USB3-connected 2 TB disk mounted at `/_/vbox`. The update/version and migration history here are Falken's account; they were not reconstructed from package or migration logs.
+
+The likely explanation is retained historical data followed by delayed reclamation, rather than newly created disk capacity:
+
+. A snapshot shares existing file blocks initially. Subsequent overwrites and deletions can leave old blocks referenced by snapshots.
+. A large OS update can therefore leave older package/library contents retained by system snapshots.
+. *If the former VM directory belonged to a snapshotted subvolume*, moving its files to another disk can remove the live files while snapshots still retain their old blocks. A snapshot of a different subvolume would not retain those VM files; do not assume every root snapshot includes the separately mounted home directory.
+. Deleting old snapshots removes those historical references. Blocks become reclaimable when no remaining reference needs them, and subvolume cleanup proceeds in the background. A small initial free-space increase followed by a much larger increase is consistent with this behavior.
+
+This is a supported explanation of the mechanism and a plausible account of this session, not proof of exactly how many bytes came from the OS update, the VM move or any particular snapshot. The deleted snapshots were not measured before removal. Deleting ordinary old Snapper restore points is a normal operation; its direct consequence is losing those older rollback points. The observed space jump alone is not evidence of corruption.
+
+[cols="3,3",options="header"]
+|===
+|Read-only check around 13:17 |Result and limit
+|Primary filesystem |`/dev/nvme0n1p3`, about 889 GiB total, 395 GiB used, 487-488 GiB available. `df`, `statvfs`, Btrfs usage and Falken's Double Commander view agreed to normal rounding.
+|Mount status |The home subvolume remained mounted read/write.
+|Btrfs device counters |Write, read, flush, corruption and generation error counters all zero; also confirmed through the readable sysfs error-stat file.
+|Recent kernel messages |No matching Btrfs error/corruption/abort/read-only messages found in the accessible 45-minute kernel-log window.
+|Scrub |No completed scrub statistics available. No scrub or repair was performed, so this is a reassuring quick check rather than a complete integrity scan.
+|VM disk |About 1.1 TiB free on the separate ext4 volume at `/_/vbox`. It is exposed read-only to this agent session. Falken intends it primarily for VMs; the Codex build currently does not need its space.
+|===
+
+A read-only directory-size review identified these possible areas for later housekeeping. Sizes below are approximate `du` directory totals, *not guaranteed reclaimable physical bytes*. Snapshot/shared-extent references and compression can change actual reclamation; file dates alone do not prove that files are unused.
+
+[cols="3,1,4",options="header"]
+|===
+|Area |Approx. GiB |Interpretation
+|`~/_/web` |129.0 |Dated download collections. A Windows installer collection under `260518` accounts for about 46.2 GiB; sampled large files are ISO installers dated May 2026. This is a plausible archive/move candidate after Falken's review, and relates naturally to the VM disk's purpose.
+|`~/_/wrk/prj` |133.5 |Project data, not automatically disposable. Its two largest project folders are about 53.6 and 44.0 GiB. Their activity/value must be reviewed before any relocation.
+|`~/.cache/paru` |16.8 |AUR build/download cache; largest entries include Edge 6.3 GiB, Chrome 4.6 GiB, Toolbox 2.1 GiB and Slack 1.7 GiB. Review retained build/package artifacts before cleanup.
+|`/var/cache/pacman` |17.0 |System package cache; some temporary directories were unreadable. Retention affects offline reinstall/downgrade options; no cache deletion was authorized or performed here.
+|`~/.local/share/JetBrains/Toolbox` |19.8 |Installed tool/application data. Do not treat it as a generic disposable cache or move it blindly.
+|`~/.arduino15/staging` |2.0 |Downloaded staging material; separate from installed board support packages.
+|===
+
+Several workspace paths are aliases of the same directories. Device/inode checks confirmed `~/_/drv/w` = `~/_/wrk`, `~/_/drv/x` = `~/_/web`, and `~/_/drv/i` = `~/_/inv`. *Do not add both sides of these aliases when estimating total data.* This explains an additional source of confusing directory-size totals. Raw diagnostic inventories were kept in temporary files, without publishing a complete personal file inventory.
+
+There is no urgent space-driven relocation or deletion needed for codex-blue now. Future housekeeping should identify a concrete source and destination, copy and verify the content, check application/path dependencies and snapshot retention, then agree any source removal separately. A move followed by retained snapshots may not return primary-disk space immediately.
+
+=== Prevent the build cache from becoming another snapshot surprise
+
+Before the first Rust build, inspect the actual Snapper configuration and which subvolumes contain the planned source, toolchain and Cargo target/cache directories. Git ignore rules do not exclude files from filesystem snapshots. Repeated snapshots of a changing compiler cache can retain earlier artifacts long after an ordinary cleanup or rebuild.
+
+Keep our small source patch, scripts and build manifests backed up. Consider placing regenerable Cargo targets/download caches outside the intended snapshot scope, for example in a dedicated nested subvolume *after reviewing the existing backup/snapshot layout*. Btrfs snapshots do not recursively include nested subvolumes; this is a layout decision to verify, not a change made by this plan. Do not silently change Snapper policy or remove the remaining restore point.
+
+This extra setup is part of implementing codex-blue responsibly, not a reason to move the entire development workspace or borrow the VM drive unnecessarily. Measure actual build-cache growth and record it with the first build timing.
+
+== Implementation steps
+
+=== 1. Create a separate local build workspace
+
+Keep this plan in the KiCad chat's documentation history. Put implementation outside the KiCad repository, provisionally under `/home/falken/_/wrk/ver/261110-codex-cli-blue-paper/`, after checking that the location is available and suitable.
+
+Keep a small Git repository for our patch, scripts, color profile, tests and handover. Store the pinned upstream checkout and large Cargo artifacts in ignored subdirectories or a dedicated build filesystem. Record source commit, patch checksum, compiler/target, Cargo.lock hash, build profile, binary checksum and test results in a per-build manifest. Keep source attribution and applicable license notices.
+
+Inventory the actual launcher, native package, resource directory and any helper executables before designing the custom package. A bare copied binary may not reproduce the installed package's helper/resource lookup. Verify the custom launcher and helper layout rather than assuming a successful `--version` proves normal operation.
+
+=== 2. Fetch Rust with an isolated user-local installation
+
+Download the installer from the official Rust rustup distribution, retain the downloaded installer and its checksum, inspect the invocation, and run it as the ordinary user. Use dedicated `RUSTUP_HOME` and `CARGO_HOME` directories inside our local build area and `--no-modify-path`; invoke their binaries explicitly from the build script. Use the minimal installer profile and the source-pinned toolchain, then provision the components declared by the checkout.
+
+For the inspected baseline this means Rust `1.95.0`, not whatever the generic installer currently considers latest. Future releases must use their own declared toolchain. Record all installed versions.
+
+Do not use `sudo` for Rust or the custom Codex build. Inspect native-library requirements from the selected checkout; install additional system packages only if actually needed and separately authorized by the normal environment controls. Upstream development helpers such as just/nextest may be useful; distinguish required tools from optional convenience tools before downloading them.
+
+Network and package operations will use the environment's normal approval mechanism if required. Writing this plan does not itself perform those operations.
+
+=== 3. Establish an unmodified baseline build
+
+Fetch the official source, resolve the selected release to its commit, inspect applicable repository instructions and keep the supplied Cargo.lock. Start with the host GNU/Linux target already supported by the machine's native compiler; record this as a deliberate difference from the installed static musl package. Cross-compiling a matching musl release is a separate optional packaging task, not a prerequisite for a local color experiment.
+
+Candidate build command from `codex-rs`, after resource checks and toolchain setup:
+
+[source,shell]
+----
+cargo build --locked -p codex-cli --bin codex --profile dev-small --jobs 2 --timings
+----
+
+The wrapper will set explicit isolated cache/target paths. Lower the job count if measurements justify it. Build only this binary and its required dependencies; avoid `--workspace`, `--all-targets` and `--all-features` for this task. Use upstream feature defaults initially. Do not remove subsystems arbitrarily just to force a smaller build.
+
+Capture stdout/stderr and timing/resource observations. Smoke-test the *unpatched* build first so compiler, packaging or runtime failures are distinguishable from our rendering change. Reuse the same target cache for the patch build; keep the unpatched executable as a comparison artifact.
+
+If `dev-small` behavior is unsuitable for ordinary use, evaluate a separate optimized build after the visual result is accepted. Record any profile changes and their runtime consequences. A local build is not a bit-for-bit reproduction of the official release.
+
+=== 4. Implement the smallest coherent rendering patch
+
+Add one shared, optional user-surface color policy used by the composer and submitted-message cell. Preserve the original rendering path when disabled. Check how per-span foreground colors override inherited styles; setting only the outer block's ink is not sufficient evidence that links, mentions and dimmed text stay readable.
+
+Use the existing terminal color-depth and contrast helpers where appropriate. Test truecolor and 256-color operation; preserve a sensible original-style fallback when color is unavailable. Explicitly exercise `NO_COLOR` / forced color modes and unknown terminal backgrounds rather than assuming that every terminal supports RGB fills.
+
+Keep the patch limited to terminal presentation and the supporting tests. Review the complete diff for accidental changes to authentication, agent permissions, networking, tools, prompts, storage or protocol behavior. No changes in those areas are required to request a blue message surface.
+
+=== 5. Check behavior before selecting the custom executable
+
+* Run formatting and the relevant rendering/style tests required by the selected source's instructions. Add focused tests for color parsing, disabled fallback and contrast/style inheritance; update only the snapshots intentionally affected by the change.
+* Verify `--version`, `--help`, exit status and helper/resource discovery from the packaged custom executable.
+* Exercise the terminal UI in a disposable Codex home first, without copying authentication files or private conversation history into test artifacts.
+* Visually inspect editable and submitted text: CZ characters, multiline wrapping, long paste, selected text, cursor, search matches, links, mentions, paths, attachment labels, empty/disabled input and ordinary dark assistant replies.
+* Check that code/diff colors and relevant keyboard behavior remain as before. Include the user's actual terminal, not only a synthetic screenshot.
+* Perform one small normal session only after local presentation/packaging checks pass. Reuse normal sign-in through the intended supported path; keep logs and manifests free of credentials.
+
+Do not make a successful full-workspace test suite a prerequisite for changing a color, but follow source instructions and investigate any affected-test failures. Do not weaken or suppress failures just to obtain a green report.
+
+=== 6. Package an explicit launcher and rollback
+
+Install validated artifacts into a versioned user-local directory. Provide `~/.local/bin/codex-blue` as an explicit wrapper, without shadowing `/usr/bin/codex`. Verify what executable and resources it selects and how it interacts with Codex's existing daemon/version handling.
+
+Keep the old installed CLI available throughout. Initial UI tests should not migrate or rewrite the real Codex state. Once normal use shares the user's Codex home, ordinary settings/session writes can still happen; a visual-only source diff is not a guarantee that a running application never writes state.
+
+Rollback is to exit the custom session and invoke ordinary `codex`. Retain the last known-good custom build until its replacement passes checks. This plan does not require replacing the current running process or abandoning its session.
+
+=== 7. Reapply after upstream upgrades
+
+Provide a command conceptually like `rebuild-blue --version 0.166.0`, with the version always explicit. The implementation must:
+
+. Resolve and record the requested official release commit and its declared Rust toolchain.
+. Start from a clean checkout, retaining the previous good build and patch history.
+. Run strict patch applicability checks before modifying source. Do not force context-mismatched hunks, use fuzzy edits or blindly replace binary bytes.
+. Stop for a small patch review when upstream moves the affected rendering/configuration code. Some updates will apply directly; others need adaptation.
+. Build with the release's lockfile and recorded profile, run relevant checks and package the matching resources.
+. Select the new artifact only after validation. Preserve an explicit record of custom patch identity even when upstream `--version` text remains unchanged.
+
+No update hook should automatically replace the active custom executable merely because npm upgraded ordinary Codex. Rebuilding stays an explicit operation. If upstream later provides an equivalent supported user-message color setting, prefer retiring our patch after verifying that feature.
+
+== Safety assessment
+
+This is a normal source-level customization of an open-source terminal application, with a narrow visual diff. It is more maintainable than editing compiled binary bytes, but it still creates a locally supported variant.
+
+The main practical risks are build resource exhaustion, dependency/native-library build failures, readability regressions and a patch becoming incompatible with a later release. Dependency build scripts execute as the build user; a lockfile fixes dependency selection but does not make downloaded build code intrinsically harmless. Fetch from the official source, retain pins/checksums, and avoid elevated builds. No additional account or API key is needed merely to compile or test local colors.
+
+Keeping the installed command and the validated custom package separate makes a failed build low impact on the existing installation. It does not make development risk-free or remove the normal capabilities of whichever Codex executable is eventually launched.
+
+== Completion criteria
+
+The plan is implemented only when the two user surfaces have readable blue paper / dark ink in Falken's actual terminal, disable/rollback works, the regular Codex command still works, tests and packaging checks are recorded, and the version-pinned reapply script succeeds on the initial release and rejects an intentionally incompatible patch context. A future release is supported only after its own build and checks; automatic compatibility across all versions is not promised.
+
+Record actual setup/build times and peak resources in a timestamped DONE document. Repeat the resource check immediately before implementation; the 13:17 update provides sufficient headroom, while the earlier low-space condition would have required preparation or another suitable build location. This resource update does not itself begin implementation.
+
+== Sources and evidence
+
+* https://learn.chatgpt.com/docs/cli-customization[Official OpenAI CLI customization documentation]: `/theme` and custom `.tmTheme` files.
+* https://learn.chatgpt.com/docs/codex/cli[Official OpenAI CLI documentation]: ordinary installation and terminal usage.
+* https://github.com/openai/codex/tree/6ff1e1ca3b30fc8b914720681fcf5fe62e95f856[Inspected upstream source commit]: build instructions in `docs/install.md`; toolchain/profile/package files and the TUI rendering paths listed above. The source was read through the GitHub connector; a build has not been attempted.
+* https://rust-lang.org/tools/install/[Official Rust installation guide]: rustup, user-local toolchain management and PATH behavior.
+* https://doc.rust-lang.org/cargo/commands/cargo-build.html[Official Cargo build reference]: selected packages/binaries, build profiles, job limits, target directories, timing and lockfile options.
+* https://btrfs.readthedocs.io/en/latest/btrfs-subvolume.html[Official Btrfs subvolume reference]: shared snapshot data, separately mounted subvolumes, nonrecursive snapshots and background deletion.
+* https://btrfs.readthedocs.io/en/latest/btrfs-filesystem.html[Official Btrfs filesystem reference]: filesystem usage and shared/exclusive extent accounting.
+
+All duration and resource-headroom allowances above are engineering estimates, not timings or build-space guarantees published by OpenAI or the Rust project.

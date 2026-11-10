@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+"""Install an explicit codex-blue package from a checked build and matching official helpers."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import tarfile
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+BUILD = ROOT / '.build'
+
+
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def official_package(version):
+    installed = Path('/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl')
+    if installed.is_dir() and json.loads((installed / 'codex-package.json').read_text())['version'] == version:
+        return installed
+    dest = BUILD / 'packages' / version
+    dest.mkdir(parents=True, exist_ok=True)
+    metadata = subprocess.check_output([
+        'npm', 'pack', '--json', '--registry=https://registry.npmjs.org',
+        '--pack-destination', str(dest), '@openai/codex-linux-x64@' + version], text=True)
+    archive = dest / json.loads(metadata)[0]['filename']
+    with tarfile.open(archive) as stream:
+        stream.extractall(dest / 'unpacked', filter='data')
+    candidates = list((dest / 'unpacked').rglob('codex-package.json'))
+    for candidate in candidates:
+        meta = json.loads(candidate.read_text())
+        if meta.get('version') == version and meta.get('target') == 'x86_64-unknown-linux-musl':
+            return candidate.parent
+    raise RuntimeError('No matching official helper/resource package found.')
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--version', required=True)
+    p.add_argument('--source', type=Path, required=True)
+    p.add_argument('--binary', type=Path, required=True)
+    p.add_argument('--validation', type=Path, required=True)
+    args = p.parse_args()
+    validation = json.loads(args.validation.read_text())
+    assert validation['build_and_focused_tests'] == 'pass'
+    assert validation['version'] == args.version
+    patch_sha = sha(ROOT / 'patches/user-paper.patch')
+    assert validation['patch_sha256'] == patch_sha
+    assert validation['binary_sha256'] == sha(args.binary), 'Binary differs from validated build.'
+    version_output = subprocess.check_output([str(args.binary), '--version'], text=True).strip()
+    assert version_output == 'codex-cli ' + args.version, version_output
+    subprocess.run([str(args.binary), '--help'], check=True, stdout=subprocess.DEVNULL)
+    vendor = official_package(args.version)
+    base = Path.home() / '.local/share/codex-blue'
+    releases = base / 'releases'
+    releases.mkdir(parents=True, exist_ok=True)
+    destination = releases / f'{args.version}-{patch_sha[:12]}'
+    assert not destination.exists(), f'Existing release left intact: {destination}'
+    staging = Path(tempfile.mkdtemp(prefix='.staging-', dir=releases))
+    shutil.copytree(vendor, staging, dirs_exist_ok=True, symlinks=True)
+    helper_target = json.loads((staging / 'codex-package.json').read_text())['target']
+    shutil.copy2(args.binary, staging / 'bin/codex')
+    metadata_path = staging / 'codex-package.json'
+    metadata = json.loads(metadata_path.read_text())
+    metadata['target'] = 'x86_64-unknown-linux-gnu'
+    metadata_path.write_text(json.dumps(metadata, indent=2) + '\n')
+    for name in ('LICENSE', 'NOTICE'):
+        if (args.source / name).exists():
+            shutil.copy2(args.source / name, staging / ('UPSTREAM-' + name))
+    manifest = dict(version=args.version, source_commit=validation['source_commit'],
+                    patch_sha256=patch_sha, binary_sha256=sha(staging / 'bin/codex'),
+                    target='x86_64-unknown-linux-gnu', official_helpers_target=helper_target,
+                    validation_sha256=sha(args.validation), profile='dev-small',
+                    note='Local color-only source patch; bundled helpers/resources from the matching official package.')
+    (staging / 'codex-blue.json').write_text(json.dumps(manifest, indent=2) + '\n')
+    os.replace(staging, destination)
+    profile = Path.home() / '.config/codex-blue/colors.json'
+    profile.parent.mkdir(parents=True, exist_ok=True)
+    if not profile.exists():
+        profile.write_text(json.dumps(dict(enabled=True, paper='#A4CDFB', ink='#101820'), indent=2) + '\n')
+    launcher = Path.home() / '.local/bin/codex-blue'
+    launcher.parent.mkdir(parents=True, exist_ok=True)
+    previous_launcher = base / 'launcher.py'
+    if launcher.exists() or launcher.is_symlink():
+        assert launcher.is_symlink() and launcher.resolve() == previous_launcher.resolve(), 'Existing unrelated codex-blue launcher left intact.'
+    shutil.copy2(ROOT / 'tools/launcher.py', previous_launcher)
+    previous_launcher.chmod(0o755)
+    if not launcher.is_symlink():
+        launcher.symlink_to(previous_launcher)
+    current = base / 'current'
+    assert not current.exists() or current.is_symlink(), 'Unexpected non-symlink current path.'
+    pending = base / '.current-pending'
+    assert not pending.exists() and not pending.is_symlink()
+    pending.symlink_to(destination)
+    os.replace(pending, current)
+    (ROOT / 'reports/installed.json').write_text(json.dumps(dict(path=str(destination), **manifest), indent=2) + '\n')
+    print('Installed explicit launcher:', launcher)
+
+
+if __name__ == '__main__':
+    main()

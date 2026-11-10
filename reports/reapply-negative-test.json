@@ -1,0 +1,6 @@
+{
+  "status": "pass",
+  "scenario": "Renamed composer style function in an isolated staged worktree.",
+  "exit_code": 1,
+  "diagnostic": "error: patch failed: codex-rs/tui/src/style.rs:58\nerror: codex-rs/tui/src/style.rs: patch does not apply\n"
+}

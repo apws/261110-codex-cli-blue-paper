@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""Strictly reapply the color patch to an explicit upstream release, build and check it."""
+import argparse
+import datetime
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+BUILD = ROOT / '.build'
+REPO = BUILD / 'upstream'
+PATCH = ROOT / 'patches/user-paper.patch'
+
+
+def run(args, cwd=None, capture=False):
+    return subprocess.run([str(a) for a in args], cwd=cwd, check=True,
+                          text=True, stdout=subprocess.PIPE if capture else None)
+
+
+def prepare(version):
+    tag = 'rust-v' + version
+    if run(['git', 'tag', '-l', tag], REPO, True).stdout.strip() != tag:
+        run(['git', 'fetch', '--depth', '1', 'origin', f'refs/tags/{tag}:refs/tags/{tag}'], REPO)
+    commit = run(['git', 'rev-parse', tag + '^{commit}'], REPO, True).stdout.strip()
+    if version == '0.166.0':
+        assert commit == '6ff1e1ca3b30fc8b914720681fcf5fe62e95f856'
+    trees = BUILD / 'trees'
+    trees.mkdir(exist_ok=True)
+    tree = Path(tempfile.mkdtemp(prefix=version + '-', dir=trees))
+    run(['git', 'worktree', 'add', '--detach', str(tree), commit], REPO)
+    # No --3way, --reject, zero-context or fuzzy fallback. Context mismatch stops here.
+    run(['git', 'apply', '--check', '--index', '--whitespace=error', str(PATCH)], tree)
+    return tree, commit
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--version', required=True)
+    p.add_argument('--jobs', type=int, default=2)
+    p.add_argument('--check-only', action='store_true')
+    p.add_argument('--package', action='store_true', help='Install only after build and focused tests pass.')
+    args = p.parse_args()
+    if not re.fullmatch(r'\d+\.\d+\.\d+(?:[-.][a-zA-Z0-9.-]+)?', args.version):
+        p.error('Use an explicit release version, such as 0.166.0.')
+    if not 1 <= args.jobs <= 4:
+        p.error('Use 1-4 jobs.')
+    tree, commit = prepare(args.version)
+    print(f'Patch applicability passed for {args.version} at {commit}.', flush=True)
+    if not args.check_only:
+        run(['git', 'apply', '--index', '--whitespace=error', str(PATCH)], tree)
+        run(['git', 'diff', '--cached', '--check'], tree)
+        for test_filter in [None, 'blue_paper', 'light_terminal_palette_renders_light_composer_snapshot']:
+            command = [ROOT / 'tools/build-codex', 'blue', '--source', tree,
+                       '--expected-commit', commit, '--jobs', str(args.jobs)]
+            if test_filter:
+                command.extend(['--test-filter', test_filter])
+            run(command)
+    report = dict(version=args.version, source_commit=commit, source=str(tree),
+                  patch_sha256=hashlib.sha256(PATCH.read_bytes()).hexdigest(),
+                  patch_applicability='pass', build_and_focused_tests='not-run' if args.check_only else 'pass')
+    if not args.check_only:
+        report['binary_sha256'] = hashlib.file_digest((BUILD / 'artifacts/blue/codex').open('rb'), 'sha256').hexdigest()
+    name = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    output = ROOT / 'reports' / f'{name}-reapply.json'
+    output.write_text(json.dumps(report, indent=2) + '\n')
+    if args.package:
+        if args.check_only:
+            p.error('--package requires the build and tests.')
+        run([ROOT / 'tools/package-blue', '--version', args.version, '--source', tree,
+             '--binary', BUILD / 'artifacts/blue/codex', '--validation', output])
+    print(json.dumps(report, indent=2))
+
+
+if __name__ == '__main__':
+    main()

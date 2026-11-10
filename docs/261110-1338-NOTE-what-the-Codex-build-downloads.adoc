@@ -1,0 +1,17 @@
+= Why the Codex build downloads Chromium-related sources
+:title: {docname}
+:revdate: 2026-11-10
+
+The first baseline build prints `Updating git submodule` for Chromium build tools, ICU, allocator code, LLVM libc++ support and other repositories. These messages describe fetching pinned dependency source trees. They do not show that a Chromium browser is being compiled.
+
+The inspected Codex 0.166.0 workspace declares a pinned `rusty_v8` fork at commit `350c5a859a9b3c84ab8701b3ad51e3b7699b30c0`. V8 is the JavaScript engine also used by Chromium; Codex's `code-mode-runtime` crate uses it for JavaScript execution, and the workspace also contains a V8 proof-of-concept crate. The V8 repository includes Chromium-related Git submodules. Cargo can fetch a workspace dependency while resolving the locked workspace, even when the command selects only the `codex` binary.
+
+Codex's CLI is mainly Rust: terminal rendering, session handling, model communication and tool coordination. V8 supports local JavaScript execution in the code-mode runtime, which can orchestrate tool calls. The AI model is a separate component; recompiling the local CLI does not rebuild or retrain the model. Our patch changes the local terminal presentation.
+
+The build still selects only package `codex-cli`, binary `codex`, with the `dev-small` profile and two Cargo jobs. Whether a dependency is fetched, compiled as Rust bindings, or linked as a native archive is a separate question. The downloaded fork's README documents prebuilt V8 static libraries as its normal mode; a complete V8 source compilation is an explicit alternative. We have not enabled `V8_FROM_SOURCE=1`.
+
+The next stages are: finish dependency resolution/downloads, compile required Rust/native dependencies, compile the Codex CLI, and link the executable. A later color-only build can reuse the dependency cache. Final logs and the resolved selected-package dependency tree will record what actually compiled; downloading a repository is not evidence that all its contents were built.
+
+*Resolved dependency check:* after the audited release-lock normalization, Cargo's selected `codex-cli` normal/build dependency tree contains no `v8` crate or `codex-code-mode-runtime` crate. The earlier V8 fetch came from resolving the larger workspace. Our initial CLI-only build therefore does not compile V8; packaging retains the matching official code-mode helper instead of rebuilding that separate executable. See `reports/selected-dependencies.json` and its recorded Cargo command.
+
+Sources inspected locally: upstream `codex-rs/Cargo.toml`, `code-mode-runtime/Cargo.toml`, `v8-poc/Cargo.toml`, and the pinned fork's downloaded `README.md` / `build.rs`. The upstream build is still in progress when this note is written.
